@@ -1,18 +1,28 @@
-class AppConfig {
-  const AppConfig._();
+const _baseUrlKey = 'base_url';
 
-  static const String baseUrl = String.fromEnvironment('base_url');
+enum AppConfig {
+  baseUrl(_baseUrlKey, true, String.fromEnvironment(_baseUrlKey))
+  ;
 
-  static String requireBaseUrl({String? override}) {
-    final value = override ?? baseUrl;
+  const AppConfig(this.key, this.isRequired, this.value);
 
-    if (value.isEmpty) {
-      throw StateError(
-        'Missing "base_url". Run the app with '
-        '--dart-define-from-file=configs/config.dev.json.',
-      );
+  final String key;
+  final bool isRequired;
+  final String value;
+
+  static void validateRequired() {
+    final missingKeys = values
+        .where((field) => field.isRequired && field.value.isEmpty)
+        .map((field) => field.key)
+        .join(', ');
+
+    if (missingKeys.isEmpty) {
+      return;
     }
 
-    return value;
+    throw StateError(
+      'Missing required app config values: $missingKeys. Run the app with '
+      '--dart-define-from-file=configs/config.dev.json.',
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:ksta/data/utils/api.dart';
+import 'package:ksta/data/utils/api_exception.dart';
 
 extension CheckData on http.Response {
   bool get isStatusCodeGood => statusCode >= 200 && statusCode < 400;
@@ -44,6 +45,8 @@ abstract class HttpRequest {
       response,
       stopwatch.elapsed,
     );
+
+    if (!response.isStatusCodeGood) throw ApiException.fromResponse(response);
 
     return response;
   }

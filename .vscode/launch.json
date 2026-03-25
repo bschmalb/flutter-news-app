@@ -4,19 +4,28 @@
     {
       "name": "KSTA",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define-from-file=configs/config.dev.json"
+      ]
     },
     {
       "name": "KSTA (Profile)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "toolArgs": [
+        "--dart-define-from-file=configs/config.dev.json"
+      ]
     },
     {
       "name": "KSTA (Release)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "toolArgs": [
+        "--dart-define-from-file=configs/config.dev.json"
+      ]
     }
   ]
 }

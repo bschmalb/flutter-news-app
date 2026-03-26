@@ -37,53 +37,55 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: widget.controller,
-      builder: (context, child) {
-        final block = widget.controller.block;
-        final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
+    return RepaintBoundary(
+      child: ListenableBuilder(
+        listenable: widget.controller,
+        builder: (context, child) {
+          final block = widget.controller.block;
+          final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
 
-        return Padding(
-          padding: context.breakpoint.sectionPadding.resolve(Directionality.of(context)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: context.breakpoint.blockSpacing,
-            children: [
-              HomepageSectionHeader(block: block),
-              if (showError)
-                HomepageBlockErrorBody(message: widget.controller.errorMessage!, onRetry: widget.controller.reload)
-              else
-                switch (block) {
-                  final HeroHomepageBlockModel hero => HomepageHeroBlockBody(
-                    block: hero,
-                    controller: widget.controller,
-                  ),
-                  final ThreeUpHomepageBlockModel threeUp => HomepageThreeUpBlockBody(
-                    block: threeUp,
-                    controller: widget.controller,
-                  ),
-                  final RankedHomepageBlockModel ranked => HomepageRankedBlockBody(
-                    block: ranked,
-                    controller: widget.controller,
-                  ),
-                  final CarouselHomepageBlockModel carousel => HomepageCarouselBlockBody(
-                    block: carousel,
-                    controller: widget.controller,
-                  ),
-                  final MixedHomepageBlockModel mixed => HomepageMixedBlockBody(
-                    block: mixed,
-                    controller: widget.controller,
-                  ),
-                  final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(block: embed),
-                  final GenericHomepageBlockModel generic => HomepageGenericBlockBody(
-                    block: generic,
-                    controller: widget.controller,
-                  ),
-                },
-            ],
-          ),
-        );
-      },
+          return Padding(
+            padding: context.breakpoint.sectionPadding.resolve(Directionality.of(context)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: context.breakpoint.blockSpacing,
+              children: [
+                HomepageSectionHeader(block: block),
+                if (showError)
+                  HomepageBlockErrorBody(message: widget.controller.errorMessage!, onRetry: widget.controller.reload)
+                else
+                  switch (block) {
+                    final HeroHomepageBlockModel hero => HomepageHeroBlockBody(
+                      block: hero,
+                      controller: widget.controller,
+                    ),
+                    final ThreeUpHomepageBlockModel threeUp => HomepageThreeUpBlockBody(
+                      block: threeUp,
+                      controller: widget.controller,
+                    ),
+                    final RankedHomepageBlockModel ranked => HomepageRankedBlockBody(
+                      block: ranked,
+                      controller: widget.controller,
+                    ),
+                    final CarouselHomepageBlockModel carousel => HomepageCarouselBlockBody(
+                      block: carousel,
+                      controller: widget.controller,
+                    ),
+                    final MixedHomepageBlockModel mixed => HomepageMixedBlockBody(
+                      block: mixed,
+                      controller: widget.controller,
+                    ),
+                    final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(block: embed),
+                    final GenericHomepageBlockModel generic => HomepageGenericBlockBody(
+                      block: generic,
+                      controller: widget.controller,
+                    ),
+                  },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

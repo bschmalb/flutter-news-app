@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ksta/app/app_repository_globals.dart';
-import 'package:ksta/data/news/models/article_preview_content_block_model.dart';
-import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/pages/article_detail/article_detail_helpers.dart';
+import 'package:ksta/pages/article_detail/controllers/article_detail_controller.dart';
 import 'package:ksta/pages/article_detail/widgets/article_content_blocks.dart';
 import 'package:ksta/pages/article_detail/widgets/article_error_state.dart';
 import 'package:ksta/pages/article_detail/widgets/article_header.dart';
@@ -13,7 +11,7 @@ import 'package:ksta/widgets/ksta_sliver_app_bar.dart';
 class ArticleDetailPage extends StatefulWidget {
   const ArticleDetailPage({super.key, required this.slug, required this.id});
 
-  static const rootName = 'articles';
+  static const routeName = 'articles';
 
   final String slug;
   final int id;
@@ -23,144 +21,96 @@ class ArticleDetailPage extends StatefulWidget {
 }
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
-  ArticlePreviewModel? _article;
-
-  final Map<int, ArticlePreviewModel?> _relatedArticles = {};
-
-  bool _isLoading = false;
-  String? _errorMessage;
+  late final ArticleDetailController _controller;
 
   @override
   void initState() {
     super.initState();
-    _article = articlePreviewStore.peek(widget.id);
-    _primeRelatedArticles(_article);
-    _loadArticleIfNeeded();
+    _controller = ArticleDetailController(articleId: widget.id)..load();
   }
 
-  Future<void> _loadArticleIfNeeded({bool refresh = false}) async {
-    if (_isLoading) return;
-    if (!refresh && _article != null) return;
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    final article = await articlePreviewStore.fetch(widget.id, refresh: refresh);
-
-    if (!mounted) return;
-
-    setState(() {
-      _article = article;
-      _isLoading = false;
-      _errorMessage = article == null ? 'Unable to load this article right now.' : null;
-    });
-
-    await _primeRelatedArticles(article, refresh: refresh);
-  }
-
-  Future<void> _primeRelatedArticles(ArticlePreviewModel? article, {bool refresh = false}) async {
-    if (article == null) return;
-
-    final relatedIds = article.contentBlocks
-        .where((block) => block.type == ArticlePreviewContentBlockType.relatedArticle)
-        .map((block) => block.relatedArticleId)
-        .whereType<int>()
-        .toSet()
-        .toList(growable: false);
-
-    if (relatedIds.isEmpty) return;
-
-    final cachedRelated = refresh ? <int, ArticlePreviewModel?>{} : articlePreviewStore.peekMany(relatedIds);
-
-    if (mounted) {
-      setState(() {
-        _relatedArticles.addAll(cachedRelated);
-      });
-    }
-
-    final missingIds = refresh
-        ? relatedIds
-        : relatedIds.where((id) => cachedRelated[id] == null).toList(growable: false);
-
-    if (missingIds.isEmpty) return;
-
-    final fetchedRelated = await articlePreviewStore.fetchMany(missingIds, refresh: refresh);
-
-    if (!mounted) return;
-
-    setState(() {
-      _relatedArticles.addAll(fetchedRelated);
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const KstaSliverAppBar(floating: true, snap: true, automaticallyImplyLeading: true),
-          const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: context.breakpoint.horizontalPadding),
-            sliver: SliverToBoxAdapter(
-              child: Align(
-                alignment: .topCenter,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: context.breakpoint.articleDetailMaxContentWidth),
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      if (_isLoading && _article == null)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 96),
-                          child: Center(child: CircularProgressIndicator.adaptive()),
-                        )
-                      else if (_article == null)
-                        ArticleErrorState(
-                          message: _errorMessage ?? 'Article not found.',
-                          onRetry: () => _loadArticleIfNeeded(refresh: true),
-                        )
-                      else ...[
-                        ArticleHeader(article: _article!),
-                        const SizedBox(height: 32),
-                        if (_article!.image != null) ArticleLeadImage(image: _article!.image!),
-                        if (_article!.introText case final intro?)
-                          Align(
-                            alignment: .centerLeft,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 760),
-                              child: Padding(
-                                padding: const .only(top: 28, bottom: 12),
-                                child: Text(
-                                  articleDetailStripHtml(intro),
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontSize: 24,
-                                    height: 1.45,
-                                    fontWeight: FontWeight.w400,
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (context, child) {
+        final article = _controller.article;
+
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              const KstaSliverAppBar(floating: true, snap: true, automaticallyImplyLeading: true),
+              const SliverToBoxAdapter(child: SizedBox(height: 12)),
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: context.breakpoint.horizontalPadding),
+                sliver: SliverToBoxAdapter(
+                  child: Align(
+                    alignment: .topCenter,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: context.breakpoint.articleDetailMaxContentWidth),
+                      child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          if (_controller.isLoading && article == null)
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 96),
+                              child: Center(child: CircularProgressIndicator.adaptive()),
+                            )
+                          else if (article == null)
+                            ArticleErrorState(
+                              message: _controller.errorMessage ?? 'Article not found.',
+                              onRetry: _controller.reload,
+                            )
+                          else ...[
+                            ArticleHeader(article: article),
+                            const SizedBox(height: 32),
+                            if (article.image != null) ArticleLeadImage(image: article.image!),
+                            if (article.introText case final intro?)
+                              Align(
+                                alignment: .centerLeft,
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(maxWidth: 760),
+                                  child: Padding(
+                                    padding: const .only(top: 28, bottom: 12),
+                                    child: Text(
+                                      articleDetailStripHtml(intro),
+                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontSize: 24,
+                                        height: 1.45,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                            Align(
+                              alignment: .centerLeft,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 760),
+                                child: ArticleContentBlocks(
+                                  article: article,
+                                  relatedArticles: _controller.relatedArticles,
+                                ),
+                              ),
                             ),
-                          ),
-                        Align(
-                          alignment: .centerLeft,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 760),
-                            child: ArticleContentBlocks(article: _article!, relatedArticles: _relatedArticles),
-                          ),
-                        ),
-                      ],
-                    ],
+                          ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              const SliverToBoxAdapter(child: SizedBox(height: 48)),
+            ],
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 48)),
-        ],
-      ),
+        );
+      },
     );
   }
 }

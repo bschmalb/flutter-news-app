@@ -13,7 +13,7 @@ class AppRouter {
 
 @TypedGoRoute<HomepageRoute>(
   path: '/',
-  routes: [TypedGoRoute<ArticleDetailRoute>(path: '${ArticleDetailPage.rootName}/:slug-:id')],
+  routes: [TypedGoRoute<ArticleDetailRoute>(path: '${ArticleDetailPage.routeName}/:slug-:id')],
 )
 @immutable
 class HomepageRoute extends GoRouteData with $HomepageRoute {

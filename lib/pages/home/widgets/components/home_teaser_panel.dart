@@ -36,10 +36,11 @@ class HomepageTeaserPanel extends StatelessWidget {
     final titleColor = Theme.of(context).colorScheme.onSurface;
     final fallbackColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
-    return InkWell(
-      onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
-      borderRadius: .circular(12),
-      child: Skeletonizer(
+    return RepaintBoundary(
+      child: InkWell(
+        onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
+        borderRadius: .circular(12),
+        child: Skeletonizer(
         enabled: shouldShowSkeleton,
         ignoreContainers: true,
         child: Padding(
@@ -68,6 +69,7 @@ class HomepageTeaserPanel extends StatelessWidget {
             ),
           },
         ),
+      ),
       ),
     );
   }

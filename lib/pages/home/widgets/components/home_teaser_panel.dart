@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/pages/home/widgets/components/app_network_image.dart';
 import 'package:ksta/pages/home/widgets/components/article_meta_row.dart';
@@ -6,6 +5,8 @@ import 'package:ksta/pages/home/widgets/components/home_teaser_placeholder_artic
 import 'package:ksta/pages/home/widgets/components/image_fallback.dart';
 import 'package:ksta/router/router.dart';
 import 'package:ksta/widgets/article_title_prefix_text.dart';
+
+import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomepageTeaserPanel extends StatelessWidget {
@@ -40,7 +41,10 @@ class HomepageTeaserPanel extends StatelessWidget {
 
     return InkWell(
       onTap: canOpenArticle
-          ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).push<void>(context)
+          ? () => ArticleDetailRoute(
+              slug: article!.routeSlug,
+              id: article!.id,
+            ).go(context)
           : null,
       borderRadius: BorderRadius.circular(12),
       child: Skeletonizer(

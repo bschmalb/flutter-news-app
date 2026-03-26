@@ -69,19 +69,14 @@ class HomepageTeaserListTile extends StatelessWidget {
                   children: [
                     if (displayArticle?.titlePrefix case final titlePrefix?)
                       ArticleTitlePrefixText(text: titlePrefix, maxLines: 1),
-                    Text(
-                      displayArticle?.title ?? 'Story #$teaserId',
-                      style: theme.textTheme.titleMedium,
-                    ),
+                    Text(displayArticle?.title ?? 'Story #$teaserId', style: theme.textTheme.titleMedium),
                     if (displayArticle?.description != null || isLoading)
                       Text(
                         displayArticle?.description ??
                             (isLoading ? 'Loading article preview...' : 'Article preview unavailable.'),
                         maxLines: 2,
                         overflow: .ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                       ),
                     ArticleMetaRow(
                       label: label,

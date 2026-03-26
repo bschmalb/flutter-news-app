@@ -6,22 +6,14 @@ import 'package:ksta/pages/home/home_page.dart';
 part 'router.g.dart';
 
 class AppRouter {
-  AppRouter()
-    : router = GoRouter(
-        initialLocation: const HomepageRoute().location,
-        routes: $appRoutes,
-      );
+  AppRouter() : router = GoRouter(initialLocation: const HomepageRoute().location, routes: $appRoutes);
 
   final GoRouter router;
 }
 
 @TypedGoRoute<HomepageRoute>(
   path: '/',
-  routes: [
-    TypedGoRoute<ArticleDetailRoute>(
-      path: '${ArticleDetailPage.rootName}/:slug-:id',
-    ),
-  ],
+  routes: [TypedGoRoute<ArticleDetailRoute>(path: '${ArticleDetailPage.rootName}/:slug-:id')],
 )
 @immutable
 class HomepageRoute extends GoRouteData with $HomepageRoute {

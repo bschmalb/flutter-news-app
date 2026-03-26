@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 enum AppBreakpoint {
   compact,
   medium,
-  expanded
-  ;
+  expanded;
 
   static AppBreakpoint fromWidth(double width) {
     if (width < 600) {
@@ -48,9 +47,7 @@ extension AppBreakpointValues on AppBreakpoint {
       AppBreakpoint.medium || AppBreakpoint.expanded => 20.0,
     };
 
-    return EdgeInsets.all(padding).add(
-      const .only(bottom: 4),
-    );
+    return EdgeInsets.all(padding).add(const .only(bottom: 4));
   }
 
   double get blockSpacing => switch (this) {

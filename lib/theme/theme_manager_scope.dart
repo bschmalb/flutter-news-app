@@ -2,11 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:ksta/theme/theme_manager.dart';
 
 class ThemeManagerScope extends InheritedNotifier<ThemeManager> {
-  const ThemeManagerScope({
-    required ThemeManager themeManager,
-    required super.child,
-    super.key,
-  }) : super(notifier: themeManager);
+  const ThemeManagerScope({required ThemeManager themeManager, required super.child, super.key})
+    : super(notifier: themeManager);
 
   static ThemeManager of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<ThemeManagerScope>();

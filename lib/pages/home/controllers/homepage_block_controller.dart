@@ -4,10 +4,8 @@ import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/data/news/models/homepage_block_model.dart';
 
 class HomepageBlockController extends ChangeNotifier {
-  HomepageBlockController({
-    required this.block,
-    bool refreshOnFirstLoad = false,
-  }) : _refreshOnFirstLoad = refreshOnFirstLoad;
+  HomepageBlockController({required this.block, bool refreshOnFirstLoad = false})
+    : _refreshOnFirstLoad = refreshOnFirstLoad;
 
   final HomepageBlockModel block;
 
@@ -58,9 +56,7 @@ class HomepageBlockController extends ChangeNotifier {
     // article previews immediately while only fetching the missing entries.
     final cachedArticles = refresh ? <int, ArticlePreviewModel?>{} : articlePreviewStore.peekMany(teaserIds);
 
-    _articlesById = {
-      for (final teaserId in teaserIds) teaserId: cachedArticles[teaserId],
-    };
+    _articlesById = {for (final teaserId in teaserIds) teaserId: cachedArticles[teaserId]};
 
     final missingTeaserIds = refresh
         ? teaserIds
@@ -76,15 +72,9 @@ class HomepageBlockController extends ChangeNotifier {
     notifyListeners();
 
     // Fetch only unresolved teasers unless the caller requested a full refresh.
-    final fetchedArticles = await articlePreviewStore.fetchMany(
-      missingTeaserIds,
-      refresh: refresh,
-    );
+    final fetchedArticles = await articlePreviewStore.fetchMany(missingTeaserIds, refresh: refresh);
 
-    _articlesById = {
-      ..._articlesById,
-      ...fetchedArticles,
-    };
+    _articlesById = {..._articlesById, ...fetchedArticles};
     _isLoading = false;
 
     if (_articlesById.values.every((article) => article == null)) {

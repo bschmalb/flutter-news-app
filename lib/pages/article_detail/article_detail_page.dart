@@ -10,11 +10,7 @@ import 'package:ksta/widgets/article_title_prefix_text.dart';
 import 'package:ksta/widgets/ksta_sliver_app_bar.dart';
 
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage({
-    super.key,
-    required this.slug,
-    required this.id,
-  });
+  const ArticleDetailPage({super.key, required this.slug, required this.id});
 
   static const rootName = 'articles';
 
@@ -50,10 +46,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       _errorMessage = null;
     });
 
-    final article = await articlePreviewStore.fetch(
-      widget.id,
-      refresh: refresh,
-    );
+    final article = await articlePreviewStore.fetch(widget.id, refresh: refresh);
 
     if (!mounted) return;
 
@@ -66,16 +59,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     await _primeRelatedArticles(article, refresh: refresh);
   }
 
-  Future<void> _primeRelatedArticles(
-    ArticlePreviewModel? article, {
-    bool refresh = false,
-  }) async {
+  Future<void> _primeRelatedArticles(ArticlePreviewModel? article, {bool refresh = false}) async {
     if (article == null) return;
 
     final relatedIds = article.contentBlocks
-        .where(
-          (block) => block.type == ArticlePreviewContentBlockType.relatedArticle,
-        )
+        .where((block) => block.type == ArticlePreviewContentBlockType.relatedArticle)
         .map((block) => block.relatedArticleId)
         .whereType<int>()
         .toSet()
@@ -97,10 +85,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
     if (missingIds.isEmpty) return;
 
-    final fetchedRelated = await articlePreviewStore.fetchMany(
-      missingIds,
-      refresh: refresh,
-    );
+    final fetchedRelated = await articlePreviewStore.fetchMany(missingIds, refresh: refresh);
 
     if (!mounted) return;
 
@@ -118,16 +103,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const KstaSliverAppBar(
-            floating: true,
-            snap: true,
-            automaticallyImplyLeading: true,
-          ),
+          const KstaSliverAppBar(floating: true, snap: true, automaticallyImplyLeading: true),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverPadding(
-            padding: EdgeInsets.symmetric(
-              horizontal: breakpoint.horizontalPadding,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: breakpoint.horizontalPadding),
             sliver: SliverToBoxAdapter(
               child: Align(
                 alignment: .topCenter,
@@ -145,9 +124,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                       if (_isLoading && article == null) ...[
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 96),
-                          child: Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
+                          child: Center(child: CircularProgressIndicator.adaptive()),
                         ),
                       ] else if (article == null) ...[
                         Padding(
@@ -168,26 +145,16 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           ),
                         ),
                       ] else ...[
-                        _ArticleHeader(
-                          article: article,
-                          breakpoint: breakpoint,
-                        ),
+                        _ArticleHeader(article: article, breakpoint: breakpoint),
                         const SizedBox(height: 32),
-                        if (article.image != null)
-                          _ArticleLeadImage(
-                            image: article.image!,
-                            breakpoint: breakpoint,
-                          ),
+                        if (article.image != null) _ArticleLeadImage(image: article.image!, breakpoint: breakpoint),
                         if (article.introText case final intro?)
                           Align(
                             alignment: .centerLeft,
                             child: ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 760),
                               child: Padding(
-                                padding: const .only(
-                                  top: 28,
-                                  bottom: 12,
-                                ),
+                                padding: const .only(top: 28, bottom: 12),
                                 child: Text(
                                   _stripHtml(intro),
                                   style: theme.textTheme.titleLarge?.copyWith(
@@ -205,10 +172,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             constraints: const BoxConstraints(maxWidth: 760),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _buildContentBlocks(
-                                context,
-                                article,
-                              ),
+                              children: _buildContentBlocks(context, article),
                             ),
                           ),
                         ),
@@ -225,10 +189,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     );
   }
 
-  List<Widget> _buildContentBlocks(
-    BuildContext context,
-    ArticlePreviewModel article,
-  ) {
+  List<Widget> _buildContentBlocks(BuildContext context, ArticlePreviewModel article) {
     final theme = Theme.of(context);
 
     return [
@@ -236,12 +197,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         switch (block.type) {
           ArticlePreviewContentBlockType.paragraph => Padding(
             padding: const .only(bottom: 22),
-            child: Text(
-              _stripHtml(block.text ?? ''),
-              style: theme.textTheme.bodyLarge?.copyWith(
-                height: 1.8,
-              ),
-            ),
+            child: Text(_stripHtml(block.text ?? ''), style: theme.textTheme.bodyLarge?.copyWith(height: 1.8)),
           ),
           ArticlePreviewContentBlockType.image => Padding(
             padding: const .symmetric(vertical: 16),
@@ -261,10 +217,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 }
 
 class _ArticleHeader extends StatelessWidget {
-  const _ArticleHeader({
-    required this.article,
-    required this.breakpoint,
-  });
+  const _ArticleHeader({required this.article, required this.breakpoint});
 
   final ArticlePreviewModel article;
   final AppBreakpoint breakpoint;
@@ -272,9 +225,7 @@ class _ArticleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final metaLabelStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.colorScheme.onSurfaceVariant,
-    );
+    final metaLabelStyle = theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant);
 
     return Align(
       alignment: .centerLeft,
@@ -288,20 +239,11 @@ class _ArticleHeader extends StatelessWidget {
               runSpacing: 8,
               children: [
                 for (final crumb in _breadcrumbs(article.urlPath))
-                  Text(
-                    crumb,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+                  Text(crumb, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
               ],
             ),
             const SizedBox(height: 20),
-            if (article.titlePrefix case final prefix?)
-              ArticleTitlePrefixText(
-                text: prefix,
-                prominent: true,
-              ),
+            if (article.titlePrefix case final prefix?) ArticleTitlePrefixText(text: prefix, prominent: true),
             const SizedBox(height: 6),
             Text(
               article.title,
@@ -315,9 +257,7 @@ class _ArticleHeader extends StatelessWidget {
               const SizedBox(height: 14),
               Text(
                 'Von ${article.primaryAuthorName!}',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
+                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.onSurface),
               ),
             ],
             const SizedBox(height: 18),
@@ -327,21 +267,12 @@ class _ArticleHeader extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 if (article.publishDate != null)
-                  Text(
-                    _formatPublishedAt(context, article.publishDate!),
-                    style: metaLabelStyle,
-                  ),
-                Text(
-                  '${_estimatedReadMinutes(article)} min',
-                  style: metaLabelStyle,
-                ),
+                  Text(_formatPublishedAt(context, article.publishDate!), style: metaLabelStyle),
+                Text('${_estimatedReadMinutes(article)} min', style: metaLabelStyle),
                 if (article.isPaid)
                   Text(
                     'KStA Plus',
-                    style: metaLabelStyle?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: metaLabelStyle?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
                   ),
               ],
             ),
@@ -364,10 +295,7 @@ class _ArticleHeader extends StatelessWidget {
 }
 
 class _ArticleLeadImage extends StatelessWidget {
-  const _ArticleLeadImage({
-    required this.image,
-    required this.breakpoint,
-  });
+  const _ArticleLeadImage({required this.image, required this.breakpoint});
 
   final ArticlePreviewImageModel image;
   final AppBreakpoint breakpoint;
@@ -383,11 +311,7 @@ class _ArticleLeadImage extends StatelessWidget {
           borderRadius: .circular(18),
           child: AspectRatio(
             aspectRatio: breakpoint == AppBreakpoint.compact ? 4 / 3 : 16 / 9,
-            child: AppNetworkImage(
-              imagePath: image.path,
-              variant: AppNetworkImageVariant.featured,
-              fit: BoxFit.cover,
-            ),
+            child: AppNetworkImage(imagePath: image.path, variant: AppNetworkImageVariant.featured, fit: BoxFit.cover),
           ),
         ),
         if (image.caption != null || image.copyrights != null) ...[
@@ -396,17 +320,11 @@ class _ArticleLeadImage extends StatelessWidget {
             spacing: 12,
             runSpacing: 4,
             children: [
-              if (image.caption != null)
-                Text(
-                  image.caption!,
-                  style: theme.textTheme.bodySmall,
-                ),
+              if (image.caption != null) Text(image.caption!, style: theme.textTheme.bodySmall),
               if (image.copyrights != null)
                 Text(
                   image.copyrights!,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
             ],
           ),
@@ -417,9 +335,7 @@ class _ArticleLeadImage extends StatelessWidget {
 }
 
 class _ArticleInlineImage extends StatelessWidget {
-  const _ArticleInlineImage({
-    required this.image,
-  });
+  const _ArticleInlineImage({required this.image});
 
   final ArticlePreviewImageModel image;
 
@@ -434,10 +350,7 @@ class _ArticleInlineImage extends StatelessWidget {
           borderRadius: .circular(16),
           child: AspectRatio(
             aspectRatio: (image.width != null && image.height != null) ? image.width! / image.height! : 16 / 9,
-            child: AppNetworkImage(
-              imagePath: image.path,
-              fit: BoxFit.cover,
-            ),
+            child: AppNetworkImage(imagePath: image.path, fit: BoxFit.cover),
           ),
         ),
         if (image.caption != null || image.copyrights != null) ...[
@@ -446,17 +359,11 @@ class _ArticleInlineImage extends StatelessWidget {
             spacing: 10,
             runSpacing: 4,
             children: [
-              if (image.caption != null)
-                Text(
-                  image.caption!,
-                  style: theme.textTheme.bodySmall,
-                ),
+              if (image.caption != null) Text(image.caption!, style: theme.textTheme.bodySmall),
               if (image.copyrights != null)
                 Text(
                   image.copyrights!,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
             ],
           ),
@@ -467,10 +374,7 @@ class _ArticleInlineImage extends StatelessWidget {
 }
 
 class _ArticleRelatedModule extends StatelessWidget {
-  const _ArticleRelatedModule({
-    required this.article,
-    required this.relatedArticleId,
-  });
+  const _ArticleRelatedModule({required this.article, required this.relatedArticleId});
 
   final ArticlePreviewModel? article;
   final int relatedArticleId;
@@ -486,15 +390,10 @@ class _ArticleRelatedModule extends StatelessWidget {
         children: [
           Text(
             'Lesen Sie auch',
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 10),
-          Text(
-            'Verwandter Artikel $relatedArticleId wird geladen ...',
-            style: theme.textTheme.bodyMedium,
-          ),
+          Text('Verwandter Artikel $relatedArticleId wird geladen ...', style: theme.textTheme.bodyMedium),
         ],
       );
     }
@@ -502,12 +401,7 @@ class _ArticleRelatedModule extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Lesen Sie auch',
-          style: theme.textTheme.labelLarge?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
+        Text('Lesen Sie auch', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         const SizedBox(height: 12),
         HomepageTeaserListTile(
           teaserId: relatedArticle.id,
@@ -521,9 +415,7 @@ class _ArticleRelatedModule extends StatelessWidget {
 }
 
 class _ArticleAction extends StatelessWidget {
-  const _ArticleAction({
-    required this.label,
-  });
+  const _ArticleAction({required this.label});
 
   final String label;
 
@@ -531,12 +423,7 @@ class _ArticleAction extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Text(
-      label,
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: theme.colorScheme.onSurfaceVariant,
-      ),
-    );
+    return Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant));
   }
 }
 
@@ -574,10 +461,7 @@ String _startCase(String value) {
 String _formatPublishedAt(BuildContext context, DateTime dateTime) {
   final localizations = MaterialLocalizations.of(context);
   final date = localizations.formatMediumDate(dateTime);
-  final time = localizations.formatTimeOfDay(
-    TimeOfDay.fromDateTime(dateTime),
-    alwaysUse24HourFormat: true,
-  );
+  final time = localizations.formatTimeOfDay(TimeOfDay.fromDateTime(dateTime), alwaysUse24HourFormat: true);
 
   return '$date, $time Uhr';
 }

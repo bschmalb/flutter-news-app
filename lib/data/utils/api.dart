@@ -1,8 +1,5 @@
 class Api {
-  const Api({
-    required this.getAccessToken,
-    required this.baseUrl,
-  });
+  const Api({required this.getAccessToken, required this.baseUrl});
 
   final Future<String?> Function() getAccessToken;
   final String baseUrl;

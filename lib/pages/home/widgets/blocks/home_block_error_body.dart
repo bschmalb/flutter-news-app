@@ -13,14 +13,8 @@ class HomepageBlockErrorBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: context.breakpoint.blockSpacing,
       children: [
-        Text(
-          message,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        OutlinedButton(
-          onPressed: onRetry,
-          child: const Text('Reload section'),
-        ),
+        Text(message, style: Theme.of(context).textTheme.bodyMedium),
+        OutlinedButton(onPressed: onRetry, child: const Text('Reload section')),
       ],
     );
   }

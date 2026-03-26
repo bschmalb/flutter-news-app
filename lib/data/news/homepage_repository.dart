@@ -27,10 +27,7 @@ class HomepageRepository extends HttpRequest {
     if (response.isStatusCodeGood) {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
 
-      return ArticlePreviewModel.fromJson(
-        decodedBody,
-        fallbackId: articleId,
-      );
+      return ArticlePreviewModel.fromJson(decodedBody, fallbackId: articleId);
     }
 
     throw ApiException.fromResponse(response);

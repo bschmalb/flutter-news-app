@@ -82,9 +82,7 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
       width: double.infinity,
       child: IgnorePointer(
         ignoring: !widget.isInteractionEnabled,
-        child: WebViewWidget(
-          controller: _controller,
-        ),
+        child: WebViewWidget(controller: _controller),
       ),
     );
   }

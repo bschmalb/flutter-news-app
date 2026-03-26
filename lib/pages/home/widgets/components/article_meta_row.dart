@@ -22,17 +22,10 @@ class ArticleMetaRow extends StatelessWidget {
       if (article?.publishDate != null) _formatArticleTimestamp(context, article!.publishDate!),
       if (article?.isPaid ?? false) 'PLUS',
     ];
-    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
-      color: labelColor,
-    );
+    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(color: labelColor);
 
     if (compact) {
-      return Text(
-        metadata.join('  •  '),
-        maxLines: 1,
-        overflow: .ellipsis,
-        style: labelStyle,
-      );
+      return Text(metadata.join('  •  '), maxLines: 1, overflow: .ellipsis, style: labelStyle);
     }
 
     return Wrap(
@@ -41,10 +34,7 @@ class ArticleMetaRow extends StatelessWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         for (final item in metadata)
-          Text(
-            item,
-            style: item == 'PLUS' ? labelStyle?.copyWith(fontWeight: FontWeight.w700) : labelStyle,
-          ),
+          Text(item, style: item == 'PLUS' ? labelStyle?.copyWith(fontWeight: FontWeight.w700) : labelStyle),
       ],
     );
   }
@@ -53,10 +43,7 @@ class ArticleMetaRow extends StatelessWidget {
 String _formatArticleTimestamp(BuildContext context, DateTime dateTime) {
   final localizations = MaterialLocalizations.of(context);
   final date = localizations.formatShortDate(dateTime);
-  final time = localizations.formatTimeOfDay(
-    TimeOfDay.fromDateTime(dateTime),
-    alwaysUse24HourFormat: true,
-  );
+  final time = localizations.formatTimeOfDay(TimeOfDay.fromDateTime(dateTime), alwaysUse24HourFormat: true);
 
   return '$date, $time';
 }

@@ -6,26 +6,17 @@ const homepageEmbedDefaultHeight = 420.0;
 const homepageEmbedMaximumHeight = 960.0;
 
 double preferredHeightForEmbed(EmbedHomepageBlockModel block) {
-  final candidates = <String?>[
-    block.html,
-    block.targetUrl,
-  ];
+  final candidates = <String?>[block.html, block.targetUrl];
 
   for (final candidate in candidates) {
     if (candidate == null) continue;
 
-    final attributeMatch = RegExp(
-      r'''height\s*=\s*["']?(\d{2,4})["']?''',
-      caseSensitive: false,
-    ).firstMatch(candidate);
+    final attributeMatch = RegExp(r'''height\s*=\s*["']?(\d{2,4})["']?''', caseSensitive: false).firstMatch(candidate);
     if (attributeMatch != null) {
       return double.parse(attributeMatch.group(1)!);
     }
 
-    final styleMatch = RegExp(
-      r'''height\s*:\s*(\d{2,4})px''',
-      caseSensitive: false,
-    ).firstMatch(candidate);
+    final styleMatch = RegExp(r'''height\s*:\s*(\d{2,4})px''', caseSensitive: false).firstMatch(candidate);
     if (styleMatch != null) {
       return double.parse(styleMatch.group(1)!);
     }
@@ -43,9 +34,7 @@ String? buildEmbedDocument(EmbedHomepageBlockModel block) {
   final targetUrl = block.targetUrl?.trim();
   if (targetUrl == null || targetUrl.isEmpty) return null;
 
-  final escapedUrl = const HtmlEscape(
-    HtmlEscapeMode.attribute,
-  ).convert(targetUrl);
+  final escapedUrl = const HtmlEscape(HtmlEscapeMode.attribute).convert(targetUrl);
   return wrapEmbedHtml('<iframe src="$escapedUrl" loading="lazy"></iframe>');
 }
 

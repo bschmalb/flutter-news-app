@@ -38,12 +38,7 @@ class HomepageTeaserPanel extends StatelessWidget {
     final fallbackColor = theme.colorScheme.surfaceContainerHighest;
 
     return InkWell(
-      onTap: article != null
-          ? () => ArticleDetailRoute(
-              slug: article!.routeSlug,
-              id: article!.id,
-            ).go(context)
-          : null,
+      onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
       borderRadius: .circular(12),
       child: Skeletonizer(
         enabled: shouldShowSkeleton,
@@ -126,10 +121,7 @@ class _HomepageTeaserPanelVerticalLayout extends StatelessWidget {
               isFeatured: isFeatured,
               titleColor: titleColor,
               useCompactLayout: true,
-              padding: EdgeInsets.only(
-                top: 14,
-                bottom: isFeatured ? 8 : 0,
-              ),
+              padding: EdgeInsets.only(top: 14, bottom: isFeatured ? 8 : 0),
             ),
           )
         else
@@ -141,10 +133,7 @@ class _HomepageTeaserPanelVerticalLayout extends StatelessWidget {
             isFeatured: isFeatured,
             titleColor: titleColor,
             useCompactLayout: false,
-            padding: EdgeInsets.only(
-              top: 14,
-              bottom: isFeatured ? 8 : 0,
-            ),
+            padding: EdgeInsets.only(top: 14, bottom: isFeatured ? 8 : 0),
           ),
       ],
     );
@@ -235,18 +224,12 @@ class _HomepageTeaserPanelImage extends StatelessWidget {
             variant: variant,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
-              return ImageFallback(
-                icon: Icons.image_not_supported_outlined,
-                backgroundColor: fallbackColor,
-              );
+              return ImageFallback(icon: Icons.image_not_supported_outlined, backgroundColor: fallbackColor);
             },
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
 
-              return ImageFallback(
-                icon: Icons.image_outlined,
-                backgroundColor: fallbackColor,
-              );
+              return ImageFallback(icon: Icons.image_outlined, backgroundColor: fallbackColor);
             },
           ),
         ),
@@ -290,11 +273,7 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
         spacing: 8,
         children: [
           if (article?.titlePrefix case final titlePrefix?)
-            ArticleTitlePrefixText(
-              text: titlePrefix,
-              prominent: isFeatured,
-              maxLines: useCompactLayout ? 1 : 2,
-            ),
+            ArticleTitlePrefixText(text: titlePrefix, prominent: isFeatured, maxLines: useCompactLayout ? 1 : 2),
           Text(
             article?.title ?? 'Story #$teaserId',
             maxLines: useCompactLayout ? 2 : null,
@@ -313,9 +292,7 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
                     descriptionText,
                     maxLines: 2,
                     overflow: .ellipsis,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
                   const Spacer(),
                   ArticleMetaRow(
@@ -332,15 +309,9 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
               descriptionText,
               maxLines: isFeatured ? 4 : 3,
               overflow: .ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
-            ArticleMetaRow(
-              label: label,
-              article: article,
-              labelColor: theme.colorScheme.onSurfaceVariant,
-            ),
+            ArticleMetaRow(label: label, article: article, labelColor: theme.colorScheme.onSurfaceVariant),
           ],
         ],
       ),
@@ -348,12 +319,6 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
   }
 }
 
-enum HomepageTeaserPanelVariant {
-  standard,
-  featured,
-}
+enum HomepageTeaserPanelVariant { standard, featured }
 
-enum HomepageTeaserPanelLayout {
-  vertical,
-  horizontal,
-}
+enum HomepageTeaserPanelLayout { vertical, horizontal }

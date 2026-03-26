@@ -29,9 +29,7 @@ class _HomePageState extends State<HomePage> {
     return ListenableBuilder(
       listenable: _controller,
       builder: (context, child) {
-        return Scaffold(
-          body: HomepageList(controller: _controller),
-        );
+        return Scaffold(body: HomepageList(controller: _controller));
       },
     );
   }

@@ -10,18 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _themeModePreferenceKey = 'theme_mode';
 
 class AppDependencies {
-  const AppDependencies({
-    required this.themeManager,
-  });
+  const AppDependencies({required this.themeManager});
 
   final ThemeManager themeManager;
 }
 
 Future<AppDependencies> initializeAppDependencies() async {
-  api = Api(
-    getAccessToken: () async => null,
-    baseUrl: AppConfig.baseUrl.value,
-  );
+  api = Api(getAccessToken: () async => null, baseUrl: AppConfig.baseUrl.value);
 
   homepageRepository = HomepageRepository(api);
   authorStore = AuthorStore();

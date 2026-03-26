@@ -18,10 +18,7 @@ class ArticlePreviewModel {
     required this.contentRestriction,
   });
 
-  factory ArticlePreviewModel.fromJson(
-    Map<String, dynamic> json, {
-    int? fallbackId,
-  }) {
+  factory ArticlePreviewModel.fromJson(Map<String, dynamic> json, {int? fallbackId}) {
     return ArticlePreviewModel(
       id: (json['id'] as num?)?.toInt() ?? fallbackId ?? 0,
       urlPath: json['urlPath'] as String?,
@@ -30,17 +27,13 @@ class ArticlePreviewModel {
       titlePrefix: json['titlePrefix'] as String?,
       description: json['description'] as String? ?? json['introTextHtml'] as String?,
       publishDate: DateTime.tryParse(json['publishDate'] as String? ?? ''),
-      image: ArticlePreviewImageModel.fromJson(
-        json['img'] as Map<String, dynamic>?,
-      ),
+      image: ArticlePreviewImageModel.fromJson(json['img'] as Map<String, dynamic>?),
       authorIds: (json['authors'] as List<dynamic>? ?? const [])
           .map((value) => (value as num).toInt())
           .toList(growable: false),
       authorNames: const [],
       introText: json['introTextHtml'] as String? ?? json['description'] as String?,
-      contentBlocks: ArticlePreviewContentBlockModel.fromJsonList(
-        json['contentItems'] as List<dynamic>?,
-      ),
+      contentBlocks: ArticlePreviewContentBlockModel.fromJsonList(json['contentItems'] as List<dynamic>?),
       contentRestriction: json['contentRestriction'] as String?,
     );
   }
@@ -62,9 +55,7 @@ class ArticlePreviewModel {
   bool get isPaid => contentRestriction == 'paid';
   String? get primaryAuthorName => authorNames.isEmpty ? null : authorNames.first;
 
-  ArticlePreviewModel copyWith({
-    List<String>? authorNames,
-  }) {
+  ArticlePreviewModel copyWith({List<String>? authorNames}) {
     return ArticlePreviewModel(
       id: id,
       urlPath: urlPath,

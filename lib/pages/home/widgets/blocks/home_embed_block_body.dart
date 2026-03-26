@@ -8,10 +8,7 @@ import 'package:ksta/pages/home/widgets/blocks/homepage_embed_document.dart';
 import 'package:ksta/pages/home/widgets/blocks/homepage_inline_embed_view.dart';
 
 class HomepageEmbedBlockBody extends StatefulWidget {
-  const HomepageEmbedBlockBody({
-    required this.block,
-    super.key,
-  });
+  const HomepageEmbedBlockBody({required this.block, super.key});
 
   final EmbedHomepageBlockModel block;
 
@@ -151,20 +148,14 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.block.providerName ?? 'External content',
-                style: theme.textTheme.titleSmall,
-              ),
+              Text(widget.block.providerName ?? 'External content', style: theme.textTheme.titleSmall),
               const SizedBox(height: 8),
               Text(
                 'This section loads content from an external provider. Tap below to load it inline.',
                 style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: 12),
-              FilledButton.tonal(
-                onPressed: _grantConsent,
-                child: const Text('Load external content'),
-              ),
+              FilledButton.tonal(onPressed: _grantConsent, child: const Text('Load external content')),
             ],
           ),
         ),
@@ -176,10 +167,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
       return _EmbedContainer(
         child: Padding(
           padding: const .all(16),
-          child: Text(
-            'No embeddable payload was provided for this section.',
-            style: theme.textTheme.bodyMedium,
-          ),
+          child: Text('No embeddable payload was provided for this section.', style: theme.textTheme.bodyMedium),
         ),
       );
     }
@@ -199,10 +187,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                 height: _embedHeight,
                 isInteractionEnabled: _isEmbedInteractionEnabled,
                 onHeightChanged: (height) {
-                  final clampedHeight = height.clamp(
-                    homepageEmbedMinimumHeight,
-                    homepageEmbedMaximumHeight,
-                  );
+                  final clampedHeight = height.clamp(homepageEmbedMinimumHeight, homepageEmbedMaximumHeight);
 
                   if ((clampedHeight - _embedHeight).abs() < 1) return;
 
@@ -244,15 +229,10 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                           decoration: BoxDecoration(
                             color: theme.colorScheme.surface.withValues(alpha: 0.96),
                             borderRadius: .circular(999),
-                            border: Border.all(
-                              color: theme.colorScheme.outlineVariant,
-                            ),
+                            border: Border.all(color: theme.colorScheme.outlineVariant),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             child: Text(
                               'Hold Ctrl or Cmd to interact with this embed',
                               style: theme.textTheme.bodySmall?.copyWith(
@@ -267,13 +247,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                     ),
                   ),
                 ),
-              if (_isLoading)
-                const Positioned(
-                  top: 12,
-                  left: 12,
-                  right: 12,
-                  child: LinearProgressIndicator(),
-                ),
+              if (_isLoading) const Positioned(top: 12, left: 12, right: 12, child: LinearProgressIndicator()),
               if (_errorMessage != null)
                 Positioned.fill(
                   child: ColoredBox(
@@ -291,16 +265,11 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                           const SizedBox(height: 8),
                           Text(
                             _errorMessage!,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                             textAlign: .center,
                           ),
                           const SizedBox(height: 12),
-                          FilledButton.tonal(
-                            onPressed: _retry,
-                            child: const Text('Retry'),
-                          ),
+                          FilledButton.tonal(onPressed: _retry, child: const Text('Retry')),
                         ],
                       ),
                     ),
@@ -315,9 +284,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
 }
 
 class _EmbedContainer extends StatelessWidget {
-  const _EmbedContainer({
-    required this.child,
-  });
+  const _EmbedContainer({required this.child});
 
   final Widget child;
 
@@ -329,14 +296,9 @@ class _EmbedContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: .circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant,
-        ),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
-      child: ClipRRect(
-        borderRadius: .circular(16),
-        child: child,
-      ),
+      child: ClipRRect(borderRadius: .circular(16), child: child),
     );
   }
 }

@@ -2,12 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiException implements Exception {
-  const ApiException({
-    required this.statusCode,
-    required this.message,
-    this.error,
-    this.body,
-  });
+  const ApiException({required this.statusCode, required this.message, this.error, this.body});
 
   factory ApiException.fromResponse(http.Response response) {
     final decodedBody = _tryDecodeJson(response.body);

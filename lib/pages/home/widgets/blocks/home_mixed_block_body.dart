@@ -5,11 +5,7 @@ import 'package:ksta/pages/home/widgets/components/home_empty_section_body.dart'
 import 'package:ksta/pages/home/widgets/components/home_teaser_list_tile.dart';
 
 class HomepageMixedBlockBody extends StatelessWidget {
-  const HomepageMixedBlockBody({
-    required this.block,
-    required this.controller,
-    super.key,
-  });
+  const HomepageMixedBlockBody({required this.block, required this.controller, super.key});
 
   final MixedHomepageBlockModel block;
   final HomepageBlockController controller;

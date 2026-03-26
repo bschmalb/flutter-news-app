@@ -11,9 +11,7 @@ class AuthorStore {
   AuthorProfileModel? peek(int authorId) => _cache[authorId];
 
   Map<int, AuthorProfileModel?> peekMany(Iterable<int> authorIds) {
-    return {
-      for (final authorId in authorIds) authorId: _cache[authorId],
-    };
+    return {for (final authorId in authorIds) authorId: _cache[authorId]};
   }
 
   Future<AuthorProfileModel?> fetch(int authorId, {bool refresh = false}) {
@@ -35,10 +33,7 @@ class AuthorStore {
         _cache[authorId] = author;
         return author;
       } catch (error, stackTrace) {
-        log(
-          'Failed to fetch author profile for $authorId: $error',
-          stackTrace: stackTrace,
-        );
+        log('Failed to fetch author profile for $authorId: $error', stackTrace: stackTrace);
         return null;
       } finally {
         _inFlight.remove(authorId);
@@ -49,18 +44,10 @@ class AuthorStore {
     return future;
   }
 
-  Future<Map<int, AuthorProfileModel?>> fetchMany(
-    Iterable<int> authorIds, {
-    bool refresh = false,
-  }) async {
+  Future<Map<int, AuthorProfileModel?>> fetchMany(Iterable<int> authorIds, {bool refresh = false}) async {
     final uniqueAuthorIds = authorIds.toSet().toList(growable: false);
     final results = await Future.wait(
-      uniqueAuthorIds.map(
-        (authorId) async => MapEntry(
-          authorId,
-          await fetch(authorId, refresh: refresh),
-        ),
-      ),
+      uniqueAuthorIds.map((authorId) async => MapEntry(authorId, await fetch(authorId, refresh: refresh))),
     );
 
     return Map<int, AuthorProfileModel?>.fromEntries(results);

@@ -1,12 +1,4 @@
-enum HomepageBlockPresentation {
-  hero,
-  mixed,
-  threeUp,
-  ranked,
-  carousel,
-  embed,
-  generic,
-}
+enum HomepageBlockPresentation { hero, mixed, threeUp, ranked, carousel, embed, generic }
 
 sealed class HomepageBlockModel {
   const HomepageBlockModel({
@@ -100,10 +92,7 @@ final class EmbedHomepageBlockModel extends HomepageBlockModel {
     required this.providerName,
     required this.html,
     required this.requiresConsent,
-  }) : super(
-         presentation: HomepageBlockPresentation.embed,
-         teaserIds: const [],
-       );
+  }) : super(presentation: HomepageBlockPresentation.embed, teaserIds: const []);
 
   final String? providerName;
   final String? html;

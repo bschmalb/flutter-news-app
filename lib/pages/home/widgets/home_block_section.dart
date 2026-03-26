@@ -13,11 +13,7 @@ import 'package:ksta/pages/home/widgets/components/home_section_header.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageBlockSection extends StatefulWidget {
-  const HomepageBlockSection({
-    super.key,
-    required this.controller,
-    this.trimTopPadding = false,
-  });
+  const HomepageBlockSection({super.key, required this.controller, this.trimTopPadding = false});
 
   final HomepageBlockController controller;
   final bool trimTopPadding;
@@ -48,12 +44,8 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final block = widget.controller.block;
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
-        final sectionPadding = breakpoint.sectionPadding.resolve(
-          Directionality.of(context),
-        );
-        final contentPadding = sectionPadding.copyWith(
-          top: widget.trimTopPadding ? 0 : sectionPadding.top,
-        );
+        final sectionPadding = breakpoint.sectionPadding.resolve(Directionality.of(context));
+        final contentPadding = sectionPadding.copyWith(top: widget.trimTopPadding ? 0 : sectionPadding.top);
 
         return Padding(
           padding: contentPadding,
@@ -63,10 +55,7 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
             children: [
               HomepageSectionHeader(block: block),
               if (showError)
-                HomepageBlockErrorBody(
-                  message: widget.controller.errorMessage!,
-                  onRetry: widget.controller.reload,
-                )
+                HomepageBlockErrorBody(message: widget.controller.errorMessage!, onRetry: widget.controller.reload)
               else
                 switch (block) {
                   final HeroHomepageBlockModel hero => HomepageHeroBlockBody(
@@ -89,9 +78,7 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
                     block: mixed,
                     controller: widget.controller,
                   ),
-                  final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(
-                    block: embed,
-                  ),
+                  final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(block: embed),
                   final GenericHomepageBlockModel generic => HomepageGenericBlockBody(
                     block: generic,
                     controller: widget.controller,

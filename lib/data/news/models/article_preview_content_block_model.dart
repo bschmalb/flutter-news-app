@@ -1,33 +1,16 @@
 import 'package:ksta/data/news/models/article_preview_image_model.dart';
 
-enum ArticlePreviewContentBlockType {
-  paragraph,
-  image,
-  relatedArticle,
-}
+enum ArticlePreviewContentBlockType { paragraph, image, relatedArticle }
 
 class ArticlePreviewContentBlockModel {
-  const ArticlePreviewContentBlockModel._({
-    required this.type,
-    this.text,
-    this.image,
-    this.relatedArticleId,
-  });
+  const ArticlePreviewContentBlockModel._({required this.type, this.text, this.image, this.relatedArticleId});
 
   factory ArticlePreviewContentBlockModel.paragraph(String text) {
-    return ArticlePreviewContentBlockModel._(
-      type: ArticlePreviewContentBlockType.paragraph,
-      text: text,
-    );
+    return ArticlePreviewContentBlockModel._(type: ArticlePreviewContentBlockType.paragraph, text: text);
   }
 
-  factory ArticlePreviewContentBlockModel.image(
-    ArticlePreviewImageModel image,
-  ) {
-    return ArticlePreviewContentBlockModel._(
-      type: ArticlePreviewContentBlockType.image,
-      image: image,
-    );
+  factory ArticlePreviewContentBlockModel.image(ArticlePreviewImageModel image) {
+    return ArticlePreviewContentBlockModel._(type: ArticlePreviewContentBlockType.image, image: image);
   }
 
   factory ArticlePreviewContentBlockModel.relatedArticle(int articleId) {
@@ -42,9 +25,7 @@ class ArticlePreviewContentBlockModel {
   final ArticlePreviewImageModel? image;
   final int? relatedArticleId;
 
-  static List<ArticlePreviewContentBlockModel> fromJsonList(
-    List<dynamic>? json,
-  ) {
+  static List<ArticlePreviewContentBlockModel> fromJsonList(List<dynamic>? json) {
     if (json == null) {
       return const [];
     }
@@ -62,9 +43,7 @@ class ArticlePreviewContentBlockModel {
             blocks.add(ArticlePreviewContentBlockModel.paragraph(text));
           }
         case 'normal':
-          final image = ArticlePreviewImageModel.fromJson(
-            content?['image'] as Map<String, dynamic>?,
-          );
+          final image = ArticlePreviewImageModel.fromJson(content?['image'] as Map<String, dynamic>?);
           if (image != null) {
             blocks.add(
               ArticlePreviewContentBlockModel.image(
@@ -85,9 +64,7 @@ class ArticlePreviewContentBlockModel {
                       as Map<String, dynamic>?)?['documentId']
                   as num?;
           if (articleId != null) {
-            blocks.add(
-              ArticlePreviewContentBlockModel.relatedArticle(articleId.toInt()),
-            );
+            blocks.add(ArticlePreviewContentBlockModel.relatedArticle(articleId.toInt()));
           }
       }
     }

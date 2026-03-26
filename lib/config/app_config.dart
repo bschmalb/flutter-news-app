@@ -4,13 +4,8 @@ const _imgixSecretKey = 'imgix_secret';
 
 enum AppConfig {
   baseUrl(_baseUrlKey, true, String.fromEnvironment(_baseUrlKey)),
-  imageBaseUrl(
-    _imageBaseUrlKey,
-    true,
-    String.fromEnvironment(_imageBaseUrlKey),
-  ),
-  imgixSecret(_imgixSecretKey, true, String.fromEnvironment(_imgixSecretKey))
-  ;
+  imageBaseUrl(_imageBaseUrlKey, true, String.fromEnvironment(_imageBaseUrlKey)),
+  imgixSecret(_imgixSecretKey, true, String.fromEnvironment(_imgixSecretKey));
 
   const AppConfig(this.key, this.isRequired, this.value);
 

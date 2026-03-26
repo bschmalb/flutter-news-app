@@ -2,10 +2,7 @@ import 'package:ksta/data/news/models/homepage_content_item_model.dart';
 import 'package:ksta/data/news/models/news_homepage_analytics_model.dart';
 
 class NewsHomepageResponseModel {
-  const NewsHomepageResponseModel({
-    required this.contentItems,
-    required this.analytics,
-  });
+  const NewsHomepageResponseModel({required this.contentItems, required this.analytics});
 
   factory NewsHomepageResponseModel.fromJson(Map<String, dynamic> json) {
     final contentItemsJson = json['contentItems'] as List<dynamic>? ?? const [];

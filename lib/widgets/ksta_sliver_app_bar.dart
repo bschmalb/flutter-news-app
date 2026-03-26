@@ -40,9 +40,7 @@ class KstaSliverAppBar extends StatelessWidget {
           child: IconButton(
             tooltip: isDarkMode ? 'Switch to light mode' : 'Switch to dark mode',
             onPressed: themeManager.enabled ? themeManager.toggleThemeMode : null,
-            icon: Icon(
-              isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-            ),
+            icon: Icon(isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
           ),
         ),
       ],
@@ -55,11 +53,7 @@ class KstaSliverAppBar extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: .topCenter,
                   end: .bottomCenter,
-                  colors: [
-                    appBarColor,
-                    appBarColor,
-                    transparentAppBarColor,
-                  ],
+                  colors: [appBarColor, appBarColor, transparentAppBarColor],
                   stops: const [0, 0.5, 1],
                 ),
               ),
@@ -75,10 +69,7 @@ class KstaSliverAppBar extends StatelessWidget {
                 'assets/logos/ksta_icon.svg',
                 height: logoHeight,
                 semanticsLabel: 'KSTA',
-                colorFilter: ColorFilter.mode(
-                  logoColor,
-                  .srcIn,
-                ),
+                colorFilter: ColorFilter.mode(logoColor, .srcIn),
               ),
             ),
           ),

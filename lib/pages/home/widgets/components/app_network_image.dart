@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ksta/config/app_config.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
-enum AppNetworkImageVariant {
-  thumbnail,
-  card,
-  featured,
-}
+enum AppNetworkImageVariant { thumbnail, card, featured }
 
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
@@ -33,11 +29,7 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolvedUrl = resolveImageUrl(
-      imagePath,
-      breakpoint: context.breakpoint,
-      variant: variant,
-    );
+    final resolvedUrl = resolveImageUrl(imagePath, breakpoint: context.breakpoint, variant: variant);
 
     return Image.network(
       resolvedUrl,
@@ -55,10 +47,7 @@ class AppNetworkImage extends StatelessWidget {
     required AppNetworkImageVariant variant,
   }) {
     final baseUri = Uri.parse(AppConfig.imageBaseUrl.value);
-    final resolvedUri = _resolveImageUri(
-      imagePath: imagePath,
-      baseUri: baseUri,
-    );
+    final resolvedUri = _resolveImageUri(imagePath: imagePath, baseUri: baseUri);
 
     if (!_isConfiguredImageUri(resolvedUri, baseUri)) return resolvedUri.toString();
 
@@ -76,10 +65,7 @@ class AppNetworkImage extends StatelessWidget {
     return resolvedUri.replace(query: signedQuery).toString();
   }
 
-  static Uri _resolveImageUri({
-    required String imagePath,
-    required Uri baseUri,
-  }) {
+  static Uri _resolveImageUri({required String imagePath, required Uri baseUri}) {
     final parsedUri = Uri.tryParse(imagePath);
 
     if (parsedUri != null && parsedUri.hasScheme) return parsedUri;
@@ -101,10 +87,7 @@ class AppNetworkImage extends StatelessWidget {
     return md5.convert(utf8.encode(payload)).toString();
   }
 
-  static String _defaultQuery({
-    required AppBreakpoint breakpoint,
-    required AppNetworkImageVariant variant,
-  }) {
+  static String _defaultQuery({required AppBreakpoint breakpoint, required AppNetworkImageVariant variant}) {
     final preset = _imagePreset(breakpoint: breakpoint, variant: variant);
 
     return _encodeQuery([
@@ -116,50 +99,33 @@ class AppNetworkImage extends StatelessWidget {
     ]);
   }
 
-  static _AppImagePreset _imagePreset({
-    required AppBreakpoint breakpoint,
-    required AppNetworkImageVariant variant,
-  }) {
+  static _AppImagePreset _imagePreset({required AppBreakpoint breakpoint, required AppNetworkImageVariant variant}) {
     return switch (variant) {
       AppNetworkImageVariant.thumbnail => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 192, height: 144),
         AppBreakpoint.medium => const _AppImagePreset(width: 288, height: 216),
-        AppBreakpoint.expanded => const _AppImagePreset(
-          width: 384,
-          height: 288,
-        ),
+        AppBreakpoint.expanded => const _AppImagePreset(width: 384, height: 288),
       },
       AppNetworkImageVariant.card => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 480, height: 360),
         AppBreakpoint.medium => const _AppImagePreset(width: 640, height: 480),
-        AppBreakpoint.expanded => const _AppImagePreset(
-          width: 800,
-          height: 600,
-        ),
+        AppBreakpoint.expanded => const _AppImagePreset(width: 800, height: 600),
       },
       AppNetworkImageVariant.featured => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 640, height: 360),
         AppBreakpoint.medium => const _AppImagePreset(width: 960, height: 540),
-        AppBreakpoint.expanded => const _AppImagePreset(
-          width: 1280,
-          height: 720,
-        ),
+        AppBreakpoint.expanded => const _AppImagePreset(width: 1280, height: 720),
       },
     };
   }
 
   static String _encodeQuery(List<MapEntry<String, String>> parameters) {
     return parameters
-        .map(
-          (parameter) => '${Uri.encodeQueryComponent(parameter.key)}=${Uri.encodeQueryComponent(parameter.value)}',
-        )
+        .map((parameter) => '${Uri.encodeQueryComponent(parameter.key)}=${Uri.encodeQueryComponent(parameter.value)}')
         .join('&');
   }
 
-  static String _signingPath({
-    required Uri imageUri,
-    required Uri baseUri,
-  }) {
+  static String _signingPath({required Uri imageUri, required Uri baseUri}) {
     final basePath = _normalizedBasePath(baseUri);
     final relativePath = imageUri.path.startsWith(basePath) ? imageUri.path.substring(basePath.length) : imageUri.path;
 
@@ -191,10 +157,7 @@ class AppNetworkImage extends StatelessWidget {
 }
 
 class _AppImagePreset {
-  const _AppImagePreset({
-    required this.width,
-    required this.height,
-  });
+  const _AppImagePreset({required this.width, required this.height});
 
   final int width;
   final int height;

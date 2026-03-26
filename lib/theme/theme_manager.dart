@@ -3,12 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
-  ThemeManager({
-    required this.getString,
-    required this.setString,
-    required this.themeKey,
-    this.enabled = true,
-  }) {
+  ThemeManager({required this.getString, required this.setString, required this.themeKey, this.enabled = true}) {
     _themeMode = _getThemeModeFromLocalStorage();
   }
 

@@ -15,17 +15,11 @@ abstract class HttpRequest {
   Future<String?> getAccessToken() async => api.getAccessToken();
   String get url => api.baseUrl;
 
-  Future<http.Response> get(
-    Uri uri, {
-    Map<String, String>? headers,
-  }) {
+  Future<http.Response> get(Uri uri, {Map<String, String>? headers}) {
     return _request(
       uri,
       requestType: 'GET',
-      request: () => http.get(
-        uri,
-        headers: headers,
-      ),
+      request: () => http.get(uri, headers: headers),
     );
   }
 
@@ -38,12 +32,7 @@ abstract class HttpRequest {
 
     _logRequest(uri, requestType);
     final response = await request();
-    _logResponse(
-      uri,
-      requestType,
-      response,
-      stopwatch.elapsed,
-    );
+    _logResponse(uri, requestType, response, stopwatch.elapsed);
 
     if (!response.isStatusCodeGood) throw ApiException.fromResponse(response);
 
@@ -54,12 +43,7 @@ abstract class HttpRequest {
     log('--> $requestType $uri');
   }
 
-  void _logResponse(
-    Uri uri,
-    String requestType,
-    http.Response response,
-    Duration responseDuration,
-  ) {
+  void _logResponse(Uri uri, String requestType, http.Response response, Duration responseDuration) {
     final prefix = response.isStatusCodeGood ? '<--' : 'X--';
 
     log(

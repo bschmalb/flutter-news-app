@@ -1,7 +1,6 @@
 enum HomepageContentItemType {
   freeHtml('free-html'),
-  unknown(null)
-  ;
+  unknown(null);
 
   const HomepageContentItemType(this.wireValue);
 
@@ -16,8 +15,7 @@ enum HomepageContentItemType {
 enum HomepagePageContentItemType {
   teaserCluster('teaser-cluster'),
   freeHtml('free-html'),
-  unknown(null)
-  ;
+  unknown(null);
 
   const HomepagePageContentItemType(this.wireValue);
 
@@ -37,15 +35,12 @@ enum HomepageLayout {
   abAbCde('ab_ab_cde'),
   abAc('ab_ac'),
   abcdEfgh('abcd_efgh'),
-  unknown(null)
-  ;
+  unknown(null);
 
   const HomepageLayout(this.wireValue);
 
   final String? wireValue;
 
-  static HomepageLayout fromWire(String? wireValue) => HomepageLayout.values.firstWhere(
-    (value) => value.wireValue == wireValue,
-    orElse: () => HomepageLayout.unknown,
-  );
+  static HomepageLayout fromWire(String? wireValue) =>
+      HomepageLayout.values.firstWhere((value) => value.wireValue == wireValue, orElse: () => HomepageLayout.unknown);
 }

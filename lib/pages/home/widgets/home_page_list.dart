@@ -20,10 +20,7 @@ class HomepageList extends StatelessWidget {
 
           // Blocks
           if (controller.isLoading && !controller.hasContent)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(child: CircularProgressIndicator.adaptive()),
-            )
+            const SliverFillRemaining(hasScrollBody: false, child: Center(child: CircularProgressIndicator.adaptive()))
           else if (controller.errorMessage != null && !controller.hasContent)
             SliverFillRemaining(
               hasScrollBody: false,
@@ -34,10 +31,7 @@ class HomepageList extends StatelessWidget {
                     mainAxisSize: .min,
                     spacing: 16,
                     children: [
-                      Text(
-                        'Failed to load homepage:\n${controller.errorMessage}',
-                        textAlign: .center,
-                      ),
+                      Text('Failed to load homepage:\n${controller.errorMessage}', textAlign: .center),
                       FilledButton(onPressed: controller.reload, child: const Text('Try again')),
                     ],
                   ),

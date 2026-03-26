@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ArticleTitlePrefixText extends StatelessWidget {
-  const ArticleTitlePrefixText({
-    required this.text,
-    this.prominent = false,
-    this.maxLines = 2,
-    super.key,
-  });
+  const ArticleTitlePrefixText({required this.text, this.prominent = false, this.maxLines = 2, super.key});
 
   final String text;
   final bool prominent;
@@ -22,11 +17,7 @@ class ArticleTitlePrefixText extends StatelessWidget {
       text,
       maxLines: maxLines,
       overflow: .ellipsis,
-      style: baseStyle?.copyWith(
-        color: highlightColor,
-        fontWeight: FontWeight.w700,
-        height: 1.15,
-      ),
+      style: baseStyle?.copyWith(color: highlightColor, fontWeight: FontWeight.w700, height: 1.15),
     );
   }
 }

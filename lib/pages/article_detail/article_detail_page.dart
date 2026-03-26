@@ -112,7 +112,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const KstaSliverAppBar(title: 'Artikel'),
+          const KstaSliverAppBar(
+            floating: true,
+            snap: true,
+            automaticallyImplyLeading: true,
+          ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
               breakpoint.horizontalPadding,

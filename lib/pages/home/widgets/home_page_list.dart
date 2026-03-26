@@ -7,16 +7,20 @@ import 'package:ksta/widgets/ksta_sliver_app_bar.dart';
 class HomepageList extends StatelessWidget {
   const HomepageList({
     required this.controller,
-    required this.pageTitle,
     super.key,
   });
 
   final HomepageController controller;
-  final String pageTitle;
 
   @override
   Widget build(BuildContext context) {
     final breakpoint = context.breakpoint;
+    final listPadding = switch (breakpoint) {
+      AppBreakpoint.compact => EdgeInsets.symmetric(
+        vertical: breakpoint.horizontalPadding,
+      ),
+      _ => EdgeInsets.all(breakpoint.horizontalPadding),
+    };
     final bodySliver = controller.isLoading && !controller.hasContent
         ? const SliverFillRemaining(
             hasScrollBody: false,
@@ -48,7 +52,7 @@ class HomepageList extends StatelessWidget {
             ),
           )
         : SliverPadding(
-            padding: EdgeInsets.all(breakpoint.horizontalPadding),
+            padding: listPadding,
             sliver: SliverList.separated(
               itemCount: controller.blockControllers.length,
               separatorBuilder: (context, index) => SizedBox(height: breakpoint.sectionSpacing),
@@ -79,7 +83,10 @@ class HomepageList extends StatelessWidget {
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          KstaSliverAppBar(title: pageTitle),
+          const KstaSliverAppBar(
+            floating: true,
+            snap: true,
+          ),
           bodySliver,
         ],
       ),

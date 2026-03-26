@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:ksta/app/app.dart';
 import 'package:ksta/app/app_dependencies.dart';
 import 'package:ksta/config/app_config.dart';
@@ -9,10 +9,7 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   AppConfig.validateRequired();
-  initializeAppDependencies();
+  final appDependencies = await initializeAppDependencies();
 
-  await SystemChrome.setEnabledSystemUIMode(.edgeToEdge);
-  await SystemChrome.setPreferredOrientations([.portraitUp]);
-
-  runApp(const App());
+  runApp(App(themeManager: appDependencies.themeManager));
 }

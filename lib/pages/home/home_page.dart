@@ -30,10 +30,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
       listenable: _controller,
       builder: (context, child) {
         return Scaffold(
-          body: HomepageList(
-            controller: _controller,
-            pageTitle: _controller.pageTitle,
-          ),
+          body: HomepageList(controller: _controller),
         );
       },
     );

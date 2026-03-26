@@ -24,7 +24,6 @@ class HomepageTeaserListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final shouldShowSkeleton = article == null && isLoading;
     final displayArticle = article ?? (shouldShowSkeleton ? homepageTeaserPlaceholderArticle : null);
 
@@ -55,7 +54,7 @@ class HomepageTeaserListTile extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                           return ImageFallback(
                             icon: Icons.image_not_supported_outlined,
-                            backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                           );
                         },
                       ),
@@ -64,24 +63,26 @@ class HomepageTeaserListTile extends StatelessWidget {
                 ),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   spacing: 8,
                   children: [
                     if (displayArticle?.titlePrefix case final titlePrefix?)
                       ArticleTitlePrefixText(text: titlePrefix, maxLines: 1),
-                    Text(displayArticle?.title ?? 'Story #$teaserId', style: theme.textTheme.titleMedium),
+                    Text(displayArticle?.title ?? 'Story #$teaserId', style: Theme.of(context).textTheme.titleMedium),
                     if (displayArticle?.description != null || isLoading)
                       Text(
                         displayArticle?.description ??
                             (isLoading ? 'Loading article preview...' : 'Article preview unavailable.'),
                         maxLines: 2,
                         overflow: .ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                       ),
                     ArticleMetaRow(
                       label: label,
                       article: displayArticle,
-                      labelColor: theme.colorScheme.onSurfaceVariant,
+                      labelColor: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ],
                 ),

@@ -39,30 +39,23 @@ class HomepageList extends StatelessWidget {
               ),
             )
           else
-            SliverPadding(
-              padding: EdgeInsets.all(context.breakpoint.horizontalPadding),
-              sliver: SliverList.separated(
-                itemCount: controller.blockControllers.length,
-                separatorBuilder: (context, index) => SizedBox(height: context.breakpoint.sectionSpacing),
-                itemBuilder: (context, index) {
-                  final blockController = controller.blockControllers[index];
+            SliverList.separated(
+              itemCount: controller.blockControllers.length,
+              separatorBuilder: (context, index) => SizedBox(height: context.breakpoint.sectionSpacing),
+              itemBuilder: (context, index) {
+                final blockController = controller.blockControllers[index];
 
-                  return Align(
-                    alignment: .topCenter,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: context.breakpoint.maxContentWidth),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: HomepageBlockSection(
-                          key: ObjectKey(blockController),
-                          controller: blockController,
-                          trimTopPadding: index == 0,
-                        ),
-                      ),
+                return Align(
+                  alignment: .topCenter,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: context.breakpoint.maxContentWidth),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: HomepageBlockSection(key: ObjectKey(blockController), controller: blockController),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
         ],
       ),

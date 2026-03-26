@@ -13,10 +13,9 @@ import 'package:ksta/pages/home/widgets/components/home_section_header.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageBlockSection extends StatefulWidget {
-  const HomepageBlockSection({super.key, required this.controller, this.trimTopPadding = false});
+  const HomepageBlockSection({super.key, required this.controller});
 
   final HomepageBlockController controller;
-  final bool trimTopPadding;
 
   @override
   State<HomepageBlockSection> createState() => _HomepageBlockSectionState();
@@ -45,10 +44,9 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
         final sectionPadding = breakpoint.sectionPadding.resolve(Directionality.of(context));
-        final contentPadding = sectionPadding.copyWith(top: widget.trimTopPadding ? 0 : sectionPadding.top);
 
         return Padding(
-          padding: contentPadding,
+          padding: sectionPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: breakpoint.blockSpacing,

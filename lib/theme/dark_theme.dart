@@ -49,6 +49,7 @@ ThemeData _buildDarkTheme() {
     ).apply(bodyColor: colorScheme.onSurface, displayColor: colorScheme.onSurface),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.transparent,
+      foregroundColor: AppColors.linen,
       surfaceTintColor: AppColors.transparent,
       scrolledUnderElevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(

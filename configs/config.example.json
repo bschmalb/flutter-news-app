@@ -1,3 +1,5 @@
 {
-  "base_url": "https://www.example.com/__content-api/"
+  "base_url": "https://www.ksta.de/__content-api/",
+  "image_base_url": "https://static.ksta.de/__images/",
+  "imgix_secret": "your-public-imgix-secret"
 }

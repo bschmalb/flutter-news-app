@@ -5,6 +5,7 @@ import 'package:ksta/pages/home/widgets/components/article_meta_row.dart';
 import 'package:ksta/pages/home/widgets/components/home_teaser_placeholder_article.dart';
 import 'package:ksta/pages/home/widgets/components/image_fallback.dart';
 import 'package:ksta/router/router.dart';
+import 'package:ksta/widgets/article_title_prefix_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomepageTeaserPanel extends StatelessWidget {
@@ -14,6 +15,7 @@ class HomepageTeaserPanel extends StatelessWidget {
     required this.isLoading,
     this.label = 'Story',
     this.variant = HomepageTeaserPanelVariant.standard,
+    this.layout = HomepageTeaserPanelLayout.vertical,
     this.useCompactLayout = false,
     super.key,
   });
@@ -23,6 +25,7 @@ class HomepageTeaserPanel extends StatelessWidget {
   final bool isLoading;
   final String label;
   final HomepageTeaserPanelVariant variant;
+  final HomepageTeaserPanelLayout layout;
   final bool useCompactLayout;
 
   @override
@@ -45,63 +48,206 @@ class HomepageTeaserPanel extends StatelessWidget {
         ignoreContainers: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: useCompactLayout ? MainAxisSize.max : MainAxisSize.min,
-            children: [
-              if (displayArticle?.image != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: AspectRatio(
-                    aspectRatio: isFeatured ? 16 / 9 : 4 / 3,
-                    child: Skeleton.replace(
-                      replace: shouldShowSkeleton,
-                      replacement: const SizedBox.expand(child: Bone()),
-                      child: AppNetworkImage(
-                        imagePath: displayArticle!.image!.path,
-                        variant: isFeatured ? AppNetworkImageVariant.featured : AppNetworkImageVariant.card,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ImageFallback(
-                            icon: Icons.image_not_supported_outlined,
-                            backgroundColor: fallbackColor,
-                          );
-                        },
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
+          child: switch (layout) {
+            HomepageTeaserPanelLayout.vertical => _HomepageTeaserPanelVerticalLayout(
+              teaserId: teaserId,
+              article: displayArticle,
+              isLoading: isLoading,
+              shouldShowSkeleton: shouldShowSkeleton,
+              label: label,
+              isFeatured: isFeatured,
+              titleColor: titleColor,
+              fallbackColor: fallbackColor,
+              useCompactLayout: useCompactLayout,
+            ),
+            HomepageTeaserPanelLayout.horizontal => _HomepageTeaserPanelHorizontalLayout(
+              teaserId: teaserId,
+              article: displayArticle,
+              isLoading: isLoading,
+              shouldShowSkeleton: shouldShowSkeleton,
+              label: label,
+              isFeatured: isFeatured,
+              titleColor: titleColor,
+              fallbackColor: fallbackColor,
+            ),
+          },
+        ),
+      ),
+    );
+  }
+}
 
-                          return ImageFallback(
-                            icon: Icons.image_outlined,
-                            backgroundColor: fallbackColor,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              if (useCompactLayout)
-                Expanded(
-                  child: _HomepageTeaserPanelTextContent(
-                    teaserId: teaserId,
-                    article: displayArticle,
-                    isLoading: isLoading,
-                    label: label,
-                    isFeatured: isFeatured,
-                    titleColor: titleColor,
-                    useCompactLayout: true,
-                  ),
-                )
-              else
-                _HomepageTeaserPanelTextContent(
-                  teaserId: teaserId,
-                  article: displayArticle,
-                  isLoading: isLoading,
-                  label: label,
-                  isFeatured: isFeatured,
-                  titleColor: titleColor,
-                  useCompactLayout: false,
-                ),
-            ],
+class _HomepageTeaserPanelVerticalLayout extends StatelessWidget {
+  const _HomepageTeaserPanelVerticalLayout({
+    required this.teaserId,
+    required this.article,
+    required this.isLoading,
+    required this.shouldShowSkeleton,
+    required this.label,
+    required this.isFeatured,
+    required this.titleColor,
+    required this.fallbackColor,
+    required this.useCompactLayout,
+  });
+
+  final int teaserId;
+  final ArticlePreviewModel? article;
+  final bool isLoading;
+  final bool shouldShowSkeleton;
+  final String label;
+  final bool isFeatured;
+  final Color titleColor;
+  final Color fallbackColor;
+  final bool useCompactLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: useCompactLayout ? MainAxisSize.max : MainAxisSize.min,
+      children: [
+        if (article?.image != null)
+          _HomepageTeaserPanelImage(
+            imagePath: article!.image!.path,
+            shouldShowSkeleton: shouldShowSkeleton,
+            fallbackColor: fallbackColor,
+            variant: isFeatured ? AppNetworkImageVariant.featured : AppNetworkImageVariant.card,
+            aspectRatio: isFeatured ? 16 / 9 : 4 / 3,
+          ),
+        if (useCompactLayout)
+          Expanded(
+            child: _HomepageTeaserPanelTextContent(
+              teaserId: teaserId,
+              article: article,
+              isLoading: isLoading,
+              label: label,
+              isFeatured: isFeatured,
+              titleColor: titleColor,
+              useCompactLayout: true,
+              padding: EdgeInsets.only(
+                top: 14,
+                bottom: isFeatured ? 8 : 0,
+              ),
+            ),
+          )
+        else
+          _HomepageTeaserPanelTextContent(
+            teaserId: teaserId,
+            article: article,
+            isLoading: isLoading,
+            label: label,
+            isFeatured: isFeatured,
+            titleColor: titleColor,
+            useCompactLayout: false,
+            padding: EdgeInsets.only(
+              top: 14,
+              bottom: isFeatured ? 8 : 0,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _HomepageTeaserPanelHorizontalLayout extends StatelessWidget {
+  const _HomepageTeaserPanelHorizontalLayout({
+    required this.teaserId,
+    required this.article,
+    required this.isLoading,
+    required this.shouldShowSkeleton,
+    required this.label,
+    required this.isFeatured,
+    required this.titleColor,
+    required this.fallbackColor,
+  });
+
+  final int teaserId;
+  final ArticlePreviewModel? article;
+  final bool isLoading;
+  final bool shouldShowSkeleton;
+  final String label;
+  final bool isFeatured;
+  final Color titleColor;
+  final Color fallbackColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final imageWidget = article?.image != null
+        ? _HomepageTeaserPanelImage(
+            imagePath: article!.image!.path,
+            shouldShowSkeleton: shouldShowSkeleton,
+            fallbackColor: fallbackColor,
+            variant: isFeatured ? AppNetworkImageVariant.featured : AppNetworkImageVariant.card,
+            aspectRatio: isFeatured ? 16 / 10 : 4 / 3,
+          )
+        : null;
+
+    return Row(
+      children: [
+        if (imageWidget != null) ...[
+          Expanded(flex: isFeatured ? 7 : 5, child: imageWidget),
+          const SizedBox(width: 20),
+        ],
+        Expanded(
+          flex: isFeatured ? 5 : 6,
+          child: _HomepageTeaserPanelTextContent(
+            teaserId: teaserId,
+            article: article,
+            isLoading: isLoading,
+            label: label,
+            isFeatured: isFeatured,
+            titleColor: titleColor,
+            useCompactLayout: false,
+            padding: EdgeInsets.only(bottom: isFeatured ? 8 : 0),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HomepageTeaserPanelImage extends StatelessWidget {
+  const _HomepageTeaserPanelImage({
+    required this.imagePath,
+    required this.shouldShowSkeleton,
+    required this.fallbackColor,
+    required this.variant,
+    required this.aspectRatio,
+  });
+
+  final String imagePath;
+  final bool shouldShowSkeleton;
+  final Color fallbackColor;
+  final AppNetworkImageVariant variant;
+  final double aspectRatio;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: AspectRatio(
+        aspectRatio: aspectRatio,
+        child: Skeleton.replace(
+          replace: shouldShowSkeleton,
+          replacement: const SizedBox.expand(child: Bone()),
+          child: AppNetworkImage(
+            imagePath: imagePath,
+            variant: variant,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return ImageFallback(
+                icon: Icons.image_not_supported_outlined,
+                backgroundColor: fallbackColor,
+              );
+            },
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+
+              return ImageFallback(
+                icon: Icons.image_outlined,
+                backgroundColor: fallbackColor,
+              );
+            },
           ),
         ),
       ),
@@ -118,6 +264,7 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
     required this.isFeatured,
     required this.titleColor,
     required this.useCompactLayout,
+    required this.padding,
   });
 
   final int teaserId;
@@ -127,6 +274,7 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
   final bool isFeatured;
   final Color titleColor;
   final bool useCompactLayout;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -135,21 +283,19 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
         article?.description ?? (isLoading ? 'Loading article preview...' : 'Article preview unavailable.');
 
     return Padding(
-      padding: EdgeInsets.only(
-        top: 14,
-        bottom: isFeatured ? 8 : 0,
-      ),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: useCompactLayout ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          ArticleMetaRow(
-            label: label,
-            article: article,
-            labelColor: theme.colorScheme.onSurfaceVariant,
-            compact: useCompactLayout,
-          ),
-          const SizedBox(height: 8),
+          if (article?.titlePrefix case final titlePrefix?) ...[
+            ArticleTitlePrefixText(
+              text: titlePrefix,
+              prominent: isFeatured,
+              maxLines: useCompactLayout ? 1 : 2,
+            ),
+            const SizedBox(height: 8),
+          ],
           Text(
             article?.title ?? 'Story #$teaserId',
             maxLines: useCompactLayout ? 2 : null,
@@ -158,31 +304,31 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
               color: titleColor,
             ),
           ),
-          if (article?.titlePrefix case final titlePrefix?)
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                titlePrefix,
-                maxLines: useCompactLayout ? 1 : null,
-                overflow: useCompactLayout ? TextOverflow.ellipsis : null,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
           const SizedBox(height: 8),
           if (useCompactLayout)
-            Flexible(
-              child: Text(
-                descriptionText,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    descriptionText,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const Spacer(),
+                  ArticleMetaRow(
+                    label: label,
+                    article: article,
+                    labelColor: theme.colorScheme.onSurfaceVariant,
+                    compact: true,
+                  ),
+                ],
               ),
             )
-          else
+          else ...[
             Text(
               descriptionText,
               maxLines: isFeatured ? 4 : 3,
@@ -191,6 +337,13 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
+            const SizedBox(height: 10),
+            ArticleMetaRow(
+              label: label,
+              article: article,
+              labelColor: theme.colorScheme.onSurfaceVariant,
+            ),
+          ],
         ],
       ),
     );
@@ -200,4 +353,9 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
 enum HomepageTeaserPanelVariant {
   standard,
   featured,
+}
+
+enum HomepageTeaserPanelLayout {
+  vertical,
+  horizontal,
 }

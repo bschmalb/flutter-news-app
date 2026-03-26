@@ -6,6 +6,7 @@ import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/pages/home/widgets/components/app_network_image.dart';
 import 'package:ksta/pages/home/widgets/components/home_teaser_list_tile.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
+import 'package:ksta/widgets/article_title_prefix_text.dart';
 import 'package:ksta/widgets/ksta_sliver_app_bar.dart';
 
 class ArticleDetailPage extends StatefulWidget {
@@ -287,11 +288,9 @@ class _ArticleHeader extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             if (article.titlePrefix case final prefix?)
-              Text(
-                prefix,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+              ArticleTitlePrefixText(
+                text: prefix,
+                prominent: true,
               ),
             const SizedBox(height: 6),
             Text(

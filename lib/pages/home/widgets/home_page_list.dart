@@ -70,6 +70,7 @@ class HomepageList extends StatelessWidget {
                       child: HomepageBlockSection(
                         key: ObjectKey(blockController),
                         controller: blockController,
+                        trimTopPadding: index == 0,
                       ),
                     ),
                   ),

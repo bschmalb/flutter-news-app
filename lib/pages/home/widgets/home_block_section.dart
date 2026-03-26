@@ -9,14 +9,18 @@ import 'package:ksta/pages/home/widgets/blocks/home_hero_block_body.dart';
 import 'package:ksta/pages/home/widgets/blocks/home_mixed_block_body.dart';
 import 'package:ksta/pages/home/widgets/blocks/home_ranked_block_body.dart';
 import 'package:ksta/pages/home/widgets/blocks/home_three_up_block_body.dart';
-import 'package:ksta/pages/home/widgets/components/home_section_footer.dart';
 import 'package:ksta/pages/home/widgets/components/home_section_header.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageBlockSection extends StatefulWidget {
-  const HomepageBlockSection({required this.controller, super.key});
+  const HomepageBlockSection({
+    required this.controller,
+    this.trimTopPadding = false,
+    super.key,
+  });
 
   final HomepageBlockController controller;
+  final bool trimTopPadding;
 
   @override
   State<HomepageBlockSection> createState() => _HomepageBlockSectionState();
@@ -45,9 +49,13 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
         final blockSpacing = breakpoint.blockSpacing;
+        final sectionPadding = breakpoint.sectionPadding.resolve(Directionality.of(context));
+        final contentPadding = sectionPadding.copyWith(
+          top: widget.trimTopPadding ? 0 : sectionPadding.top,
+        );
 
         return Padding(
-          padding: breakpoint.sectionPadding,
+          padding: contentPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -86,10 +94,6 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
                     controller: widget.controller,
                   ),
                 },
-              if (block.sourceLayout != null || block.targetUrl != null) ...[
-                SizedBox(height: blockSpacing),
-                HomepageSectionFooter(block: block),
-              ],
             ],
           ),
         );

@@ -5,6 +5,7 @@ import 'package:ksta/pages/home/widgets/components/article_meta_row.dart';
 import 'package:ksta/pages/home/widgets/components/home_teaser_placeholder_article.dart';
 import 'package:ksta/pages/home/widgets/components/image_fallback.dart';
 import 'package:ksta/router/router.dart';
+import 'package:ksta/widgets/article_title_prefix_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomepageTeaserListTile extends StatelessWidget {
@@ -42,7 +43,6 @@ class HomepageTeaserListTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (displayArticle?.image != null)
                 ClipRRect(
@@ -72,12 +72,13 @@ class HomepageTeaserListTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ArticleMetaRow(
-                      label: label,
-                      article: displayArticle,
-                      labelColor: theme.colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(height: 4),
+                    if (displayArticle?.titlePrefix case final titlePrefix?) ...[
+                      ArticleTitlePrefixText(
+                        text: titlePrefix,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                     Text(
                       displayArticle?.title ?? 'Story #$teaserId',
                       style: theme.textTheme.titleMedium,
@@ -94,6 +95,12 @@ class HomepageTeaserListTile extends StatelessWidget {
                         ),
                       ),
                     ],
+                    const SizedBox(height: 8),
+                    ArticleMetaRow(
+                      label: label,
+                      article: displayArticle,
+                      labelColor: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ],
                 ),
               ),

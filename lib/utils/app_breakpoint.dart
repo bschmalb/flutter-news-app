@@ -67,4 +67,10 @@ extension AppBreakpointValues on AppBreakpoint {
     AppBreakpoint.medium => 960,
     AppBreakpoint.expanded => 1280,
   };
+
+  double get articleDetailMaxContentWidth => switch (this) {
+    AppBreakpoint.compact => double.infinity,
+    AppBreakpoint.medium => 960,
+    AppBreakpoint.expanded => 1180,
+  };
 }

@@ -111,13 +111,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               child: Align(
                 alignment: .topCenter,
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: switch (breakpoint) {
-                      AppBreakpoint.compact => double.infinity,
-                      AppBreakpoint.medium => 960,
-                      AppBreakpoint.expanded => 1180,
-                    },
-                  ),
+                  constraints: BoxConstraints(maxWidth: breakpoint.articleDetailMaxContentWidth),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

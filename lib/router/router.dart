@@ -28,7 +28,7 @@ class HomepageRoute extends GoRouteData with $HomepageRoute {
   const HomepageRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const HomepageScreen();
+  Widget build(BuildContext context, GoRouterState state) => const HomePage();
 }
 
 @immutable

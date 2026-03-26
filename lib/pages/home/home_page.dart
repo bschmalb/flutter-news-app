@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ksta/pages/home/controllers/homepage_controller.dart';
 import 'package:ksta/pages/home/widgets/home_page_list.dart';
 
-class HomepageScreen extends StatefulWidget {
-  const HomepageScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomepageScreen> createState() => _HomepageScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomepageScreenState extends State<HomepageScreen> {
+class _HomePageState extends State<HomePage> {
   late final HomepageController _controller;
 
   @override

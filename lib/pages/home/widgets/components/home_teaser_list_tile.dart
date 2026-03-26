@@ -29,12 +29,7 @@ class HomepageTeaserListTile extends StatelessWidget {
     final displayArticle = article ?? (shouldShowSkeleton ? homepageTeaserPlaceholderArticle : null);
 
     return InkWell(
-      onTap: article != null
-          ? () => ArticleDetailRoute(
-              slug: article!.routeSlug,
-              id: article!.id,
-            ).go(context)
-          : null,
+      onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
       borderRadius: .circular(12),
       child: Skeletonizer(
         enabled: shouldShowSkeleton,
@@ -42,7 +37,6 @@ class HomepageTeaserListTile extends StatelessWidget {
         child: Padding(
           padding: const .symmetric(vertical: 2),
           child: Row(
-            crossAxisAlignment: .center,
             spacing: 12,
             children: [
               if (displayArticle?.image != null)
@@ -73,17 +67,13 @@ class HomepageTeaserListTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 8,
                   children: [
-                    if (displayArticle?.titlePrefix case final titlePrefix?) ...[
-                      ArticleTitlePrefixText(
-                        text: titlePrefix,
-                        maxLines: 1,
-                      ),
-                    ],
+                    if (displayArticle?.titlePrefix case final titlePrefix?)
+                      ArticleTitlePrefixText(text: titlePrefix, maxLines: 1),
                     Text(
                       displayArticle?.title ?? 'Story #$teaserId',
                       style: theme.textTheme.titleMedium,
                     ),
-                    if (displayArticle?.description != null || isLoading) ...[
+                    if (displayArticle?.description != null || isLoading)
                       Text(
                         displayArticle?.description ??
                             (isLoading ? 'Loading article preview...' : 'Article preview unavailable.'),
@@ -93,7 +83,6 @@ class HomepageTeaserListTile extends StatelessWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                    ],
                     ArticleMetaRow(
                       label: label,
                       article: displayArticle,

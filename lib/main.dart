@@ -5,7 +5,9 @@ import 'package:ksta/app/app_dependencies.dart';
 import 'package:ksta/config/app_config.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   AppConfig.validateRequired();
   initializeAppDependencies();
 

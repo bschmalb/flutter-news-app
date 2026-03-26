@@ -6,11 +6,11 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$feedRoute];
+List<RouteBase> get $appRoutes => [$homepageRoute];
 
-RouteBase get $feedRoute => GoRouteData.$route(
+RouteBase get $homepageRoute => GoRouteData.$route(
   path: '/',
-  factory: $FeedRoute._fromState,
+  factory: $HomepageRoute._fromState,
   routes: [
     GoRouteData.$route(
       path: 'articles/:slug-:id',
@@ -19,8 +19,8 @@ RouteBase get $feedRoute => GoRouteData.$route(
   ],
 );
 
-mixin $FeedRoute on GoRouteData {
-  static FeedRoute _fromState(GoRouterState state) => const FeedRoute();
+mixin $HomepageRoute on GoRouteData {
+  static HomepageRoute _fromState(GoRouterState state) => const HomepageRoute();
 
   @override
   String get location => GoRouteData.$location('/');
@@ -32,19 +32,17 @@ mixin $FeedRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+  void pushReplacement(BuildContext context) => context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);
 }
 
 mixin $ArticleDetailRoute on GoRouteData {
-  static ArticleDetailRoute _fromState(GoRouterState state) =>
-      ArticleDetailRoute(
-        slug: state.pathParameters['slug']!,
-        id: int.parse(state.pathParameters['id']!),
-      );
+  static ArticleDetailRoute _fromState(GoRouterState state) => ArticleDetailRoute(
+    slug: state.pathParameters['slug']!,
+    id: int.parse(state.pathParameters['id']!),
+  );
 
   ArticleDetailRoute get _self => this as ArticleDetailRoute;
 
@@ -60,8 +58,7 @@ mixin $ArticleDetailRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+  void pushReplacement(BuildContext context) => context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksta/screens/detail/article_detail_page.dart';
-import 'package:ksta/screens/feed.dart';
+import 'package:ksta/pages/article_detail/article_detail_page.dart';
+import 'package:ksta/pages/home/home_page.dart';
 
 part 'router.g.dart';
 
 class AppRouter {
   AppRouter()
     : router = GoRouter(
-        initialLocation: const FeedRoute().location,
+        initialLocation: const HomepageRoute().location,
         routes: $appRoutes,
       );
 
   final GoRouter router;
 }
 
-@TypedGoRoute<FeedRoute>(
+@TypedGoRoute<HomepageRoute>(
   path: '/',
   routes: [
     TypedGoRoute<ArticleDetailRoute>(
@@ -24,13 +24,11 @@ class AppRouter {
   ],
 )
 @immutable
-class FeedRoute extends GoRouteData with $FeedRoute {
-  const FeedRoute();
+class HomepageRoute extends GoRouteData with $HomepageRoute {
+  const HomepageRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const FeedScreen();
-  }
+  Widget build(BuildContext context, GoRouterState state) => const HomepageScreen();
 }
 
 @immutable
@@ -41,10 +39,5 @@ class ArticleDetailRoute extends GoRouteData with $ArticleDetailRoute {
   final int id;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return ArticleDetailPage(
-      slug: slug,
-      id: id,
-    );
-  }
+  Widget build(BuildContext context, GoRouterState state) => ArticleDetailPage(slug: slug, id: id);
 }

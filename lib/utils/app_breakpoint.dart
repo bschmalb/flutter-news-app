@@ -3,7 +3,8 @@ import 'package:flutter/widgets.dart';
 enum AppBreakpoint {
   compact,
   medium,
-  expanded;
+  expanded
+  ;
 
   static AppBreakpoint fromWidth(double width) {
     if (width < 600) {
@@ -19,8 +20,7 @@ enum AppBreakpoint {
 }
 
 extension AppBreakpointBuildContext on BuildContext {
-  AppBreakpoint get breakpoint =>
-      AppBreakpoint.fromWidth(MediaQuery.sizeOf(this).width);
+  AppBreakpoint get breakpoint => AppBreakpoint.fromWidth(MediaQuery.sizeOf(this).width);
 
   bool get isCompact => breakpoint == AppBreakpoint.compact;
 
@@ -42,10 +42,16 @@ extension AppBreakpointValues on AppBreakpoint {
     AppBreakpoint.expanded => 32,
   };
 
-  double get sectionSpacing => switch (this) {
-    AppBreakpoint.compact => 12,
+  double get blockSpacing => switch (this) {
+    AppBreakpoint.compact => 14,
     AppBreakpoint.medium => 16,
-    AppBreakpoint.expanded => 20,
+    AppBreakpoint.expanded => 18,
+  };
+
+  double get sectionSpacing => switch (this) {
+    AppBreakpoint.compact => 18,
+    AppBreakpoint.medium => 22,
+    AppBreakpoint.expanded => 26,
   };
 
   double get maxContentWidth => switch (this) {

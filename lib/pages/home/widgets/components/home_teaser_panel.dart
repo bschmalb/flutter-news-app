@@ -33,7 +33,7 @@ class HomepageTeaserPanel extends StatelessWidget {
     final theme = Theme.of(context);
     final isFeatured = variant == HomepageTeaserPanelVariant.featured;
     final shouldShowSkeleton = article == null && isLoading;
-    final displayArticle = article ?? (shouldShowSkeleton ? buildHomepageTeaserPlaceholderArticle(teaserId) : null);
+    final displayArticle = article ?? (shouldShowSkeleton ? homepageTeaserPlaceholderArticle : null);
     final titleColor = theme.colorScheme.onSurface;
     final fallbackColor = theme.colorScheme.surfaceContainerHighest;
 

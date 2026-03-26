@@ -13,10 +13,7 @@ import 'package:ksta/utils/inputs/scroll_behaviour.dart';
 final rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class App extends StatefulWidget {
-  const App({
-    required this.themeManager,
-    super.key,
-  });
+  const App({super.key, required this.themeManager});
 
   final ThemeManager themeManager;
 
@@ -74,10 +71,8 @@ class _AppState extends State<App> {
                 GlobalWidgetsLocalizations.delegate,
               ],
               builder: (context, child) {
-                final theme = Theme.of(context);
-
                 return AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: _statusBarStyleForTheme(theme),
+                  value: _statusBarStyleForTheme(Theme.of(context)),
                   child: MediaQuery.withNoTextScaling(
                     child: child ?? const ScaffoldErrorPage(message: 'Error, no child provided'),
                   ),

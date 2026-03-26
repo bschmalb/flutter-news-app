@@ -11,15 +11,13 @@ class HomepageSectionFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (block.sourceLayout == null && block.targetUrl == null) {
       return const SizedBox.shrink();
     }
 
     return DefaultTextStyle(
-      style: theme.textTheme.bodySmall!.copyWith(
-        color: theme.colorScheme.onSurfaceVariant,
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
       child: Wrap(
         spacing: 16,

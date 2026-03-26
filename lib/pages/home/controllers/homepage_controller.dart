@@ -44,7 +44,12 @@ class HomepageController extends ChangeNotifier {
       // section gets its own loading and article resolution state.
       final blockControllers = homepage
           .toHomepageBlocks()
-          .map((block) => HomepageBlockController(block: block, refreshOnFirstLoad: refreshArticles))
+          .map(
+            (block) => HomepageBlockController(
+              block: block,
+              refreshOnFirstLoad: refreshArticles,
+            ),
+          )
           .toList(growable: false);
 
       _disposeBlockControllers();

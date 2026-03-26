@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/pages/home/widgets/components/app_network_image.dart';
 import 'package:ksta/pages/home/widgets/components/article_meta_row.dart';
@@ -5,12 +6,11 @@ import 'package:ksta/pages/home/widgets/components/home_teaser_placeholder_artic
 import 'package:ksta/pages/home/widgets/components/image_fallback.dart';
 import 'package:ksta/router/router.dart';
 import 'package:ksta/widgets/article_title_prefix_text.dart';
-
-import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomepageTeaserPanel extends StatelessWidget {
   const HomepageTeaserPanel({
+    super.key,
     required this.teaserId,
     required this.article,
     required this.isLoading,
@@ -18,7 +18,6 @@ class HomepageTeaserPanel extends StatelessWidget {
     this.variant = HomepageTeaserPanelVariant.standard,
     this.layout = HomepageTeaserPanelLayout.vertical,
     this.useCompactLayout = false,
-    super.key,
   });
 
   final int teaserId;
@@ -37,21 +36,20 @@ class HomepageTeaserPanel extends StatelessWidget {
     final displayArticle = article ?? (shouldShowSkeleton ? buildHomepageTeaserPlaceholderArticle(teaserId) : null);
     final titleColor = theme.colorScheme.onSurface;
     final fallbackColor = theme.colorScheme.surfaceContainerHighest;
-    final canOpenArticle = article != null;
 
     return InkWell(
-      onTap: canOpenArticle
+      onTap: article != null
           ? () => ArticleDetailRoute(
               slug: article!.routeSlug,
               id: article!.id,
             ).go(context)
           : null,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: .circular(12),
       child: Skeletonizer(
         enabled: shouldShowSkeleton,
         ignoreContainers: true,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const .symmetric(vertical: 4),
           child: switch (layout) {
             HomepageTeaserPanelLayout.vertical => _HomepageTeaserPanelVerticalLayout(
               teaserId: teaserId,
@@ -108,7 +106,7 @@ class _HomepageTeaserPanelVerticalLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: useCompactLayout ? MainAxisSize.max : MainAxisSize.min,
+      mainAxisSize: useCompactLayout ? .max : .min,
       children: [
         if (article?.image != null)
           _HomepageTeaserPanelImage(
@@ -187,11 +185,10 @@ class _HomepageTeaserPanelHorizontalLayout extends StatelessWidget {
         : null;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20,
       children: [
-        if (imageWidget != null) ...[
-          Expanded(flex: isFeatured ? 7 : 5, child: imageWidget),
-          const SizedBox(width: 20),
-        ],
+        if (imageWidget != null) Expanded(flex: isFeatured ? 7 : 5, child: imageWidget),
         Expanded(
           flex: isFeatured ? 5 : 6,
           child: _HomepageTeaserPanelTextContent(
@@ -228,7 +225,7 @@ class _HomepageTeaserPanelImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: .circular(12),
       child: AspectRatio(
         aspectRatio: aspectRatio,
         child: Skeleton.replace(
@@ -290,34 +287,33 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
       padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: useCompactLayout ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisSize: useCompactLayout ? .max : .min,
+        spacing: 8,
         children: [
-          if (article?.titlePrefix case final titlePrefix?) ...[
+          if (article?.titlePrefix case final titlePrefix?)
             ArticleTitlePrefixText(
               text: titlePrefix,
               prominent: isFeatured,
               maxLines: useCompactLayout ? 1 : 2,
             ),
-            const SizedBox(height: 8),
-          ],
           Text(
             article?.title ?? 'Story #$teaserId',
             maxLines: useCompactLayout ? 2 : null,
-            overflow: useCompactLayout ? TextOverflow.ellipsis : null,
+            overflow: useCompactLayout ? .ellipsis : null,
             style: (isFeatured ? theme.textTheme.headlineSmall : theme.textTheme.titleMedium)?.copyWith(
               color: titleColor,
             ),
           ),
-          const SizedBox(height: 8),
           if (useCompactLayout)
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 8,
                 children: [
                   Text(
                     descriptionText,
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: .ellipsis,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -336,12 +332,11 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
             Text(
               descriptionText,
               maxLines: isFeatured ? 4 : 3,
-              overflow: TextOverflow.ellipsis,
+              overflow: .ellipsis,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 10),
             ArticleMetaRow(
               label: label,
               article: article,

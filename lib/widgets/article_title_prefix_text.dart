@@ -21,7 +21,7 @@ class ArticleTitlePrefixText extends StatelessWidget {
     return Text(
       text,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: .ellipsis,
       style: baseStyle?.copyWith(
         color: highlightColor,
         fontWeight: FontWeight.w700,

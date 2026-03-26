@@ -6,11 +6,7 @@ import 'package:ksta/pages/home/widgets/components/home_teaser_panel.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageHeroBlockBody extends StatelessWidget {
-  const HomepageHeroBlockBody({
-    required this.block,
-    required this.controller,
-    super.key,
-  });
+  const HomepageHeroBlockBody({super.key, required this.block, required this.controller});
 
   final HeroHomepageBlockModel block;
   final HomepageBlockController controller;
@@ -31,6 +27,7 @@ class HomepageHeroBlockBody extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: spacing,
       children: [
         HomepageTeaserPanel(
           teaserId: featured,
@@ -40,25 +37,24 @@ class HomepageHeroBlockBody extends StatelessWidget {
           layout: useHorizontalHero ? HomepageTeaserPanelLayout.horizontal : HomepageTeaserPanelLayout.vertical,
         ),
         if (secondary.isNotEmpty) ...[
-          SizedBox(height: spacing),
           if (breakpoint == AppBreakpoint.compact)
             Column(
+              spacing: spacing,
               children: [
-                for (var index = 0; index < secondary.length; index++) ...[
+                for (var index = 0; index < secondary.length; index++)
                   HomepageTeaserPanel(
                     teaserId: secondary[index],
                     article: controller.articleFor(secondary[index]),
                     isLoading: controller.isLoading,
                   ),
-                  if (index != secondary.length - 1) SizedBox(height: spacing),
-                ],
               ],
             )
           else
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: spacing,
               children: [
-                for (var index = 0; index < secondary.length; index++) ...[
+                for (var index = 0; index < secondary.length; index++)
                   Expanded(
                     child: HomepageTeaserPanel(
                       teaserId: secondary[index],
@@ -67,8 +63,6 @@ class HomepageHeroBlockBody extends StatelessWidget {
                       layout: HomepageTeaserPanelLayout.horizontal,
                     ),
                   ),
-                  if (index != secondary.length - 1) SizedBox(width: spacing),
-                ],
               ],
             ),
         ],

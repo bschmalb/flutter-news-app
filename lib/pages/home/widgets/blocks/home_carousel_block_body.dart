@@ -6,11 +6,7 @@ import 'package:ksta/pages/home/widgets/components/home_teaser_panel.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageCarouselBlockBody extends StatelessWidget {
-  const HomepageCarouselBlockBody({
-    required this.block,
-    required this.controller,
-    super.key,
-  });
+  const HomepageCarouselBlockBody({super.key, required this.block, required this.controller});
 
   final CarouselHomepageBlockModel block;
   final HomepageBlockController controller;
@@ -26,16 +22,15 @@ class HomepageCarouselBlockBody extends StatelessWidget {
 
     if (breakpoint == AppBreakpoint.compact) {
       return Column(
+        spacing: blockSpacing,
         children: [
-          for (var index = 0; index < block.teaserIds.length; index++) ...[
+          for (var index = 0; index < block.teaserIds.length; index++)
             HomepageTeaserPanel(
               teaserId: block.teaserIds[index],
               article: controller.articleFor(block.teaserIds[index]),
               isLoading: controller.isLoading,
               label: block.mobileSwipeableEnabled ? 'Swipeable collection' : 'Collection item',
             ),
-            if (index != block.teaserIds.length - 1) SizedBox(height: blockSpacing),
-          ],
         ],
       );
     }
@@ -54,7 +49,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
     return SizedBox(
       height: listHeight,
       child: ListView.separated(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: .horizontal,
         itemCount: block.teaserIds.length,
         separatorBuilder: (context, index) => SizedBox(width: blockSpacing),
         itemBuilder: (context, index) {

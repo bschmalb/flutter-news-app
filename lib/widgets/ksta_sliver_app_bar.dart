@@ -4,12 +4,7 @@ import 'package:ksta/theme/app_colors.dart';
 import 'package:ksta/theme/theme_manager_scope.dart';
 
 class KstaSliverAppBar extends StatelessWidget {
-  const KstaSliverAppBar({
-    super.key,
-    this.floating = false,
-    this.snap = false,
-    this.automaticallyImplyLeading = false,
-  });
+  const KstaSliverAppBar({super.key, this.floating = false, this.snap = false, this.automaticallyImplyLeading = false});
 
   final bool floating;
   final bool snap;
@@ -58,8 +53,8 @@ class KstaSliverAppBar extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: .topCenter,
+                  end: .bottomCenter,
                   colors: [
                     appBarColor,
                     appBarColor,
@@ -82,7 +77,7 @@ class KstaSliverAppBar extends StatelessWidget {
                 semanticsLabel: 'KSTA',
                 colorFilter: ColorFilter.mode(
                   logoColor,
-                  BlendMode.srcIn,
+                  .srcIn,
                 ),
               ),
             ),

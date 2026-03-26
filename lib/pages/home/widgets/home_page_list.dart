@@ -5,10 +5,7 @@ import 'package:ksta/utils/app_breakpoint.dart';
 import 'package:ksta/widgets/ksta_sliver_app_bar.dart';
 
 class HomepageList extends StatelessWidget {
-  const HomepageList({
-    required this.controller,
-    super.key,
-  });
+  const HomepageList({super.key, required this.controller});
 
   final HomepageController controller;
 
@@ -21,73 +18,80 @@ class HomepageList extends StatelessWidget {
       ),
       _ => EdgeInsets.all(breakpoint.horizontalPadding),
     };
-    final bodySliver = controller.isLoading && !controller.hasContent
-        ? const SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(
-              child: CircularProgressIndicator.adaptive(),
+    late final Widget bodySliver;
+
+    if (controller.isLoading && !controller.hasContent) {
+      bodySliver = const SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      );
+    } else if (controller.errorMessage != null && !controller.hasContent) {
+      bodySliver = SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: Padding(
+            padding: const .all(24),
+            child: Column(
+              mainAxisSize: .min,
+              spacing: 16,
+              children: [
+                Text(
+                  'Failed to load homepage:\n${controller.errorMessage}',
+                  textAlign: .center,
+                ),
+                FilledButton(
+                  onPressed: controller.reload,
+                  child: const Text('Try again'),
+                ),
+              ],
             ),
-          )
-        : controller.errorMessage != null && !controller.hasContent
-        ? SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Failed to load homepage:\n${controller.errorMessage}',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: controller.reload,
-                      child: const Text('Try again'),
-                    ),
-                  ],
+          ),
+        ),
+      );
+    } else {
+      bodySliver = SliverPadding(
+        padding: listPadding,
+        sliver: SliverList.separated(
+          itemCount: controller.blockControllers.length,
+          separatorBuilder: (context, index) => SizedBox(height: breakpoint.sectionSpacing),
+          itemBuilder: (context, index) {
+            final blockController = controller.blockControllers[index];
+
+            return Align(
+              alignment: .topCenter,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: breakpoint.maxContentWidth,
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: HomepageBlockSection(
+                    key: ObjectKey(blockController),
+                    controller: blockController,
+                    trimTopPadding: index == 0,
+                  ),
                 ),
               ),
-            ),
-          )
-        : SliverPadding(
-            padding: listPadding,
-            sliver: SliverList.separated(
-              itemCount: controller.blockControllers.length,
-              separatorBuilder: (context, index) => SizedBox(height: breakpoint.sectionSpacing),
-              itemBuilder: (context, index) {
-                final blockController = controller.blockControllers[index];
-
-                return Align(
-                  alignment: Alignment.topCenter,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: breakpoint.maxContentWidth,
-                    ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: HomepageBlockSection(
-                        key: ObjectKey(blockController),
-                        controller: blockController,
-                        trimTopPadding: index == 0,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
+            );
+          },
+        ),
+      );
+    }
 
     return RefreshIndicator(
       onRefresh: controller.reload,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
+          // Header
           const KstaSliverAppBar(
             floating: true,
             snap: true,
           ),
+
+          // Blocks
           bodySliver,
         ],
       ),

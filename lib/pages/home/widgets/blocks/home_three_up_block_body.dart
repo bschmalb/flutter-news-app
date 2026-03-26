@@ -6,11 +6,7 @@ import 'package:ksta/pages/home/widgets/components/home_teaser_panel.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageThreeUpBlockBody extends StatelessWidget {
-  const HomepageThreeUpBlockBody({
-    required this.block,
-    required this.controller,
-    super.key,
-  });
+  const HomepageThreeUpBlockBody({super.key, required this.block, required this.controller});
 
   final ThreeUpHomepageBlockModel block;
   final HomepageBlockController controller;
@@ -27,15 +23,14 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
 
     if (breakpoint == AppBreakpoint.compact) {
       return Column(
+        spacing: blockSpacing,
         children: [
-          for (var index = 0; index < ids.length; index++) ...[
+          for (var index = 0; index < ids.length; index++)
             HomepageTeaserPanel(
               teaserId: ids[index],
               article: controller.articleFor(ids[index]),
               isLoading: controller.isLoading,
             ),
-            if (index != ids.length - 1) SizedBox(height: blockSpacing),
-          ],
         ],
       );
     }

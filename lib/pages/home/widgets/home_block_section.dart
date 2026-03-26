@@ -14,9 +14,9 @@ import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageBlockSection extends StatefulWidget {
   const HomepageBlockSection({
+    super.key,
     required this.controller,
     this.trimTopPadding = false,
-    super.key,
   });
 
   final HomepageBlockController controller;
@@ -48,8 +48,9 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final block = widget.controller.block;
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
-        final blockSpacing = breakpoint.blockSpacing;
-        final sectionPadding = breakpoint.sectionPadding.resolve(Directionality.of(context));
+        final sectionPadding = breakpoint.sectionPadding.resolve(
+          Directionality.of(context),
+        );
         final contentPadding = sectionPadding.copyWith(
           top: widget.trimTopPadding ? 0 : sectionPadding.top,
         );
@@ -58,9 +59,9 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
           padding: contentPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: breakpoint.blockSpacing,
             children: [
               HomepageSectionHeader(block: block),
-              SizedBox(height: blockSpacing),
               if (showError)
                 HomepageBlockErrorBody(
                   message: widget.controller.errorMessage!,
@@ -88,7 +89,9 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
                     block: mixed,
                     controller: widget.controller,
                   ),
-                  final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(block: embed),
+                  final EmbedHomepageBlockModel embed => HomepageEmbedBlockBody(
+                    block: embed,
+                  ),
                   final GenericHomepageBlockModel generic => HomepageGenericBlockBody(
                     block: generic,
                     controller: widget.controller,

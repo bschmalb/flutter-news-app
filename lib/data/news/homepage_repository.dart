@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/data/news/models/author_profile_model.dart';
 import 'package:ksta/data/news/models/news_homepage_response_model.dart';

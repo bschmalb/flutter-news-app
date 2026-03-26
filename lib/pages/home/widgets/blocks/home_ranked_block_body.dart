@@ -5,11 +5,7 @@ import 'package:ksta/pages/home/widgets/components/home_empty_section_body.dart'
 import 'package:ksta/pages/home/widgets/components/home_teaser_list_tile.dart';
 
 class HomepageRankedBlockBody extends StatelessWidget {
-  const HomepageRankedBlockBody({
-    required this.block,
-    required this.controller,
-    super.key,
-  });
+  const HomepageRankedBlockBody({super.key, required this.block, required this.controller});
 
   final RankedHomepageBlockModel block;
   final HomepageBlockController controller;
@@ -23,10 +19,12 @@ class HomepageRankedBlockBody extends StatelessWidget {
     }
 
     return Column(
+      spacing: 20,
       children: [
-        for (var index = 0; index < block.teaserIds.length; index++) ...[
+        for (var index = 0; index < block.teaserIds.length; index++)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
             children: [
               CircleAvatar(
                 radius: 14,
@@ -34,7 +32,6 @@ class HomepageRankedBlockBody extends StatelessWidget {
                 foregroundColor: theme.colorScheme.onPrimaryContainer,
                 child: Text('${index + 1}'),
               ),
-              const SizedBox(width: 12),
               Expanded(
                 child: HomepageTeaserListTile(
                   teaserId: block.teaserIds[index],
@@ -45,8 +42,6 @@ class HomepageRankedBlockBody extends StatelessWidget {
               ),
             ],
           ),
-          if (index != block.teaserIds.length - 1) const SizedBox(height: 20),
-        ],
       ],
     );
   }

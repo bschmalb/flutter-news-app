@@ -21,7 +21,9 @@ class ArticlePreviewContentBlockModel {
     );
   }
 
-  factory ArticlePreviewContentBlockModel.image(ArticlePreviewImageModel image) {
+  factory ArticlePreviewContentBlockModel.image(
+    ArticlePreviewImageModel image,
+  ) {
     return ArticlePreviewContentBlockModel._(
       type: ArticlePreviewContentBlockType.image,
       image: image,
@@ -40,7 +42,9 @@ class ArticlePreviewContentBlockModel {
   final ArticlePreviewImageModel? image;
   final int? relatedArticleId;
 
-  static List<ArticlePreviewContentBlockModel> fromJsonList(List<dynamic>? json) {
+  static List<ArticlePreviewContentBlockModel> fromJsonList(
+    List<dynamic>? json,
+  ) {
     if (json == null) {
       return const [];
     }

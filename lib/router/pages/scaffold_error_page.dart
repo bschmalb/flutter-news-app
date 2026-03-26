@@ -10,7 +10,7 @@ class ScaffoldErrorPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const .all(24),
           child: Text(
             message,
             textAlign: .center,

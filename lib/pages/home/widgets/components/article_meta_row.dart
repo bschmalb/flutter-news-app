@@ -3,11 +3,11 @@ import 'package:ksta/data/news/models/article_preview_model.dart';
 
 class ArticleMetaRow extends StatelessWidget {
   const ArticleMetaRow({
+    super.key,
     required this.label,
     required this.article,
     required this.labelColor,
     this.compact = false,
-    super.key,
   });
 
   final String label;
@@ -22,8 +22,7 @@ class ArticleMetaRow extends StatelessWidget {
       if (article?.publishDate != null) _formatArticleTimestamp(context, article!.publishDate!),
       if (article?.isPaid ?? false) 'PLUS',
     ];
-    final theme = Theme.of(context);
-    final labelStyle = theme.textTheme.labelMedium?.copyWith(
+    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
       color: labelColor,
     );
 
@@ -31,7 +30,7 @@ class ArticleMetaRow extends StatelessWidget {
       return Text(
         metadata.join('  •  '),
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
         style: labelStyle,
       );
     }

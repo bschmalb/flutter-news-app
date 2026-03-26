@@ -28,7 +28,9 @@ class HomepageContentItemModel {
       targetUrl: json['targetUrlPathOrUrl'] as String?,
       recoBoxId: json['recoBoxId'] as String?,
       menuHandle: json['menuHandle'] as String?,
-      teaserClusterEmphasis: int.tryParse(json['teaserClusterEmphasis']?.toString() ?? ''),
+      teaserClusterEmphasis: int.tryParse(
+        json['teaserClusterEmphasis']?.toString() ?? '',
+      ),
       mobileSwipeableEnabled: json['mobileSwipeableEnabled'] as bool? ?? false,
       providerName: json['providerName'] as String?,
       html: json['html'] as String?,

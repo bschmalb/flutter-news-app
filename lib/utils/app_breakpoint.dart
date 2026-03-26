@@ -49,7 +49,7 @@ extension AppBreakpointValues on AppBreakpoint {
     };
 
     return EdgeInsets.all(padding).add(
-      const EdgeInsets.only(bottom: 4),
+      const .only(bottom: 4),
     );
   }
 

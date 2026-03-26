@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,11 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolvedUrl = resolveImageUrl(imagePath, breakpoint: context.breakpoint, variant: variant);
+    final resolvedUrl = resolveImageUrl(
+      imagePath,
+      breakpoint: context.breakpoint,
+      variant: variant,
+    );
 
     return Image.network(
       resolvedUrl,
@@ -52,7 +55,10 @@ class AppNetworkImage extends StatelessWidget {
     required AppNetworkImageVariant variant,
   }) {
     final baseUri = Uri.parse(AppConfig.imageBaseUrl.value);
-    final resolvedUri = _resolveImageUri(imagePath: imagePath, baseUri: baseUri);
+    final resolvedUri = _resolveImageUri(
+      imagePath: imagePath,
+      baseUri: baseUri,
+    );
 
     if (!_isConfiguredImageUri(resolvedUri, baseUri)) return resolvedUri.toString();
 
@@ -118,17 +124,26 @@ class AppNetworkImage extends StatelessWidget {
       AppNetworkImageVariant.thumbnail => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 192, height: 144),
         AppBreakpoint.medium => const _AppImagePreset(width: 288, height: 216),
-        AppBreakpoint.expanded => const _AppImagePreset(width: 384, height: 288),
+        AppBreakpoint.expanded => const _AppImagePreset(
+          width: 384,
+          height: 288,
+        ),
       },
       AppNetworkImageVariant.card => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 480, height: 360),
         AppBreakpoint.medium => const _AppImagePreset(width: 640, height: 480),
-        AppBreakpoint.expanded => const _AppImagePreset(width: 800, height: 600),
+        AppBreakpoint.expanded => const _AppImagePreset(
+          width: 800,
+          height: 600,
+        ),
       },
       AppNetworkImageVariant.featured => switch (breakpoint) {
         AppBreakpoint.compact => const _AppImagePreset(width: 640, height: 360),
         AppBreakpoint.medium => const _AppImagePreset(width: 960, height: 540),
-        AppBreakpoint.expanded => const _AppImagePreset(width: 1280, height: 720),
+        AppBreakpoint.expanded => const _AppImagePreset(
+          width: 1280,
+          height: 720,
+        ),
       },
     };
   }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ksta/data/news/models/homepage_block_model.dart';
 
 const homepageEmbedMinimumHeight = 220.0;
@@ -44,7 +43,9 @@ String? buildEmbedDocument(EmbedHomepageBlockModel block) {
   final targetUrl = block.targetUrl?.trim();
   if (targetUrl == null || targetUrl.isEmpty) return null;
 
-  final escapedUrl = const HtmlEscape(HtmlEscapeMode.attribute).convert(targetUrl);
+  final escapedUrl = const HtmlEscape(
+    HtmlEscapeMode.attribute,
+  ).convert(targetUrl);
   return wrapEmbedHtml('<iframe src="$escapedUrl" loading="lazy"></iframe>');
 }
 

@@ -50,7 +50,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       _errorMessage = null;
     });
 
-    final article = await articlePreviewStore.fetch(widget.id, refresh: refresh);
+    final article = await articlePreviewStore.fetch(
+      widget.id,
+      refresh: refresh,
+    );
 
     if (!mounted) return;
 
@@ -70,7 +73,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     if (article == null) return;
 
     final relatedIds = article.contentBlocks
-        .where((block) => block.type == ArticlePreviewContentBlockType.relatedArticle)
+        .where(
+          (block) => block.type == ArticlePreviewContentBlockType.relatedArticle,
+        )
         .map((block) => block.relatedArticleId)
         .whereType<int>()
         .toSet()
@@ -120,10 +125,12 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: breakpoint.horizontalPadding),
+            padding: EdgeInsets.symmetric(
+              horizontal: breakpoint.horizontalPadding,
+            ),
             sliver: SliverToBoxAdapter(
               child: Align(
-                alignment: Alignment.topCenter,
+                alignment: .topCenter,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     maxWidth: switch (breakpoint) {
@@ -144,13 +151,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                         ),
                       ] else if (article == null) ...[
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 96),
+                          padding: const .symmetric(vertical: 96),
                           child: Column(
                             children: [
                               Text(
                                 _errorMessage ?? 'Article not found.',
                                 style: theme.textTheme.titleMedium,
-                                textAlign: TextAlign.center,
+                                textAlign: .center,
                               ),
                               const SizedBox(height: 16),
                               FilledButton(
@@ -173,11 +180,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           ),
                         if (article.introText case final intro?)
                           Align(
-                            alignment: Alignment.centerLeft,
+                            alignment: .centerLeft,
                             child: ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 760),
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 28, bottom: 12),
+                                padding: const .only(
+                                  top: 28,
+                                  bottom: 12,
+                                ),
                                 child: Text(
                                   _stripHtml(intro),
                                   style: theme.textTheme.titleLarge?.copyWith(
@@ -190,7 +200,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             ),
                           ),
                         Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: .centerLeft,
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 760),
                             child: Column(
@@ -225,7 +235,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       for (final block in article.contentBlocks) ...[
         switch (block.type) {
           ArticlePreviewContentBlockType.paragraph => Padding(
-            padding: const EdgeInsets.only(bottom: 22),
+            padding: const .only(bottom: 22),
             child: Text(
               _stripHtml(block.text ?? ''),
               style: theme.textTheme.bodyLarge?.copyWith(
@@ -234,11 +244,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             ),
           ),
           ArticlePreviewContentBlockType.image => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const .symmetric(vertical: 16),
             child: _ArticleInlineImage(image: block.image!),
           ),
           ArticlePreviewContentBlockType.relatedArticle => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const .symmetric(vertical: 16),
             child: _ArticleRelatedModule(
               article: _relatedArticles[block.relatedArticleId],
               relatedArticleId: block.relatedArticleId!,
@@ -267,7 +277,7 @@ class _ArticleHeader extends StatelessWidget {
     );
 
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 860),
         child: Column(
@@ -370,7 +380,7 @@ class _ArticleLeadImage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: .circular(18),
           child: AspectRatio(
             aspectRatio: breakpoint == AppBreakpoint.compact ? 4 / 3 : 16 / 9,
             child: AppNetworkImage(
@@ -421,7 +431,7 @@ class _ArticleInlineImage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: .circular(16),
           child: AspectRatio(
             aspectRatio: (image.width != null && image.height != null) ? image.width! / image.height! : 16 / 9,
             child: AppNetworkImage(

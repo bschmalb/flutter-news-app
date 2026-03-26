@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:ui_web' as ui_web;
-
 import 'package:flutter/material.dart';
 
 class HomepageInlineEmbedView extends StatefulWidget {
@@ -41,7 +40,10 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
     super.initState();
     _viewType = 'homepage-inline-embed-${_nextViewId++}';
     _iframeElement = _createIframe(widget.document);
-    ui_web.platformViewRegistry.registerViewFactory(_viewType, (_) => _iframeElement);
+    ui_web.platformViewRegistry.registerViewFactory(
+      _viewType,
+      (_) => _iframeElement,
+    );
     _subscribeToEvents();
   }
 
@@ -79,7 +81,9 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
 
     _errorSubscription = _iframeElement.onError.listen((_) {
       widget.onLoadingChanged?.call(false);
-      widget.onErrorChanged?.call('The external embed could not be loaded in the browser.');
+      widget.onErrorChanged?.call(
+        'The external embed could not be loaded in the browser.',
+      );
     });
 
     _messageSubscription = html.window.onMessage.listen((event) {

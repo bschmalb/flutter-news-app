@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:ksta/app/app_repository_globals.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
 

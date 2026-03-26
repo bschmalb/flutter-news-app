@@ -30,7 +30,9 @@ class ArticlePreviewModel {
       titlePrefix: json['titlePrefix'] as String?,
       description: json['description'] as String? ?? json['introTextHtml'] as String?,
       publishDate: DateTime.tryParse(json['publishDate'] as String? ?? ''),
-      image: ArticlePreviewImageModel.fromJson(json['img'] as Map<String, dynamic>?),
+      image: ArticlePreviewImageModel.fromJson(
+        json['img'] as Map<String, dynamic>?,
+      ),
       authorIds: (json['authors'] as List<dynamic>? ?? const [])
           .map((value) => (value as num).toInt())
           .toList(growable: false),

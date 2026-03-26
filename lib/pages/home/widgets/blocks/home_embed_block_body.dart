@@ -87,7 +87,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
     if (!_hasConsent) {
       return _EmbedContainer(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const .all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,7 +115,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
     if (document == null) {
       return _EmbedContainer(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const .all(16),
           child: Text(
             'No embeddable payload was provided for this section.',
             style: theme.textTheme.bodyMedium,
@@ -170,14 +170,14 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
               child: ColoredBox(
                 color: theme.colorScheme.surface.withValues(alpha: 0.92),
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const .all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'Failed to load external content.',
                         style: theme.textTheme.titleSmall,
-                        textAlign: TextAlign.center,
+                        textAlign: .center,
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -185,7 +185,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: .center,
                       ),
                       const SizedBox(height: 12),
                       FilledButton.tonal(
@@ -217,13 +217,13 @@ class _EmbedContainer extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: .circular(16),
         border: Border.all(
           color: theme.colorScheme.outlineVariant,
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: .circular(16),
         child: child,
       ),
     );

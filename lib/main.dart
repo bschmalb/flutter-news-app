@@ -1,10 +1,9 @@
-import 'package:ksta/app/app.dart';
-import 'package:ksta/app/app_dependencies.dart';
-import 'package:ksta/config/app_config.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:ksta/app/app.dart';
+import 'package:ksta/app/app_dependencies.dart';
+import 'package:ksta/config/app_config.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

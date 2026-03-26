@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ksta/router/pages/scaffold_error_page.dart';
 import 'package:ksta/router/router.dart';
+import 'package:ksta/theme/app_colors.dart';
 import 'package:ksta/theme/dark_theme.dart';
 import 'package:ksta/theme/light_theme.dart';
 import 'package:ksta/theme/theme_manager.dart';
@@ -30,7 +31,7 @@ class _AppState extends State<App> {
     final isDark = theme.brightness == Brightness.dark;
 
     return SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
+      statusBarColor: AppColors.transparent,
       statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
       statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
     );

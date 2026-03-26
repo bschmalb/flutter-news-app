@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ksta/theme/app_colors.dart';
 import 'package:ksta/theme/theme_manager_scope.dart';
 
 class KstaSliverAppBar extends StatelessWidget {
@@ -33,9 +34,9 @@ class KstaSliverAppBar extends StatelessWidget {
       automaticallyImplyLeading: automaticallyImplyLeading,
       toolbarHeight: toolbarHeight,
       expandedHeight: toolbarHeight + fadeHeight,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       elevation: 0,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppColors.transparent,
       foregroundColor: logoColor,
       iconTheme: IconThemeData(color: logoColor),
       actions: [

@@ -10,6 +10,7 @@ class HomepageInlineEmbedView extends StatefulWidget {
   const HomepageInlineEmbedView({
     required this.document,
     required this.height,
+    required this.isInteractionEnabled,
     this.onHeightChanged,
     this.onLoadingChanged,
     this.onErrorChanged,
@@ -18,6 +19,7 @@ class HomepageInlineEmbedView extends StatefulWidget {
 
   final String document;
   final double height;
+  final bool isInteractionEnabled;
   final ValueChanged<double>? onHeightChanged;
   final ValueChanged<bool>? onLoadingChanged;
   final ValueChanged<String?>? onErrorChanged;
@@ -54,6 +56,10 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
     if (oldWidget.document != widget.document) {
       _iframeElement.srcdoc = widget.document;
     }
+
+    if (oldWidget.isInteractionEnabled != widget.isInteractionEnabled) {
+      _applyInteractionState(_iframeElement);
+    }
   }
 
   @override
@@ -65,12 +71,19 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
   }
 
   html.IFrameElement _createIframe(String document) {
-    return html.IFrameElement()
+    final iframe = html.IFrameElement()
       ..srcdoc = document
       ..style.border = '0'
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.display = 'block';
+
+    _applyInteractionState(iframe);
+    return iframe;
+  }
+
+  void _applyInteractionState(html.IFrameElement iframe) {
+    iframe.style.pointerEvents = widget.isInteractionEnabled ? 'auto' : 'none';
   }
 
   void _subscribeToEvents() {

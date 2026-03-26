@@ -1,5 +1,8 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:ksta/data/news/models/homepage_block_model.dart';
 import 'package:ksta/pages/home/widgets/blocks/homepage_embed_document.dart';
 import 'package:ksta/pages/home/widgets/blocks/homepage_inline_embed_view.dart';
@@ -20,15 +23,31 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
   late double _embedHeight;
   late bool _hasConsent;
   bool _isLoading = false;
+  bool _isModifierPressed = false;
+  bool _showInteractionHint = false;
   String? _errorMessage;
   int _reloadToken = 0;
+  Timer? _interactionHintTimer;
 
   String? get _embedDocument => buildEmbedDocument(widget.block);
+  bool get _usesInteractionLock {
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.macOS || TargetPlatform.windows || TargetPlatform.linux => true,
+      _ => false,
+    };
+  }
+
+  bool get _isEmbedInteractionEnabled {
+    if (!_usesInteractionLock) return true;
+    if (!_hasConsent || _errorMessage != null) return false;
+    return _isModifierPressed;
+  }
 
   @override
   void initState() {
     super.initState();
     _resetFromBlock(widget.block);
+    HardwareKeyboard.instance.addHandler(_handleHardwareKeyEvent);
   }
 
   @override
@@ -38,6 +57,13 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
     if (oldWidget.block != widget.block) {
       _resetFromBlock(widget.block);
     }
+  }
+
+  @override
+  void dispose() {
+    _interactionHintTimer?.cancel();
+    HardwareKeyboard.instance.removeHandler(_handleHardwareKeyEvent);
+    super.dispose();
   }
 
   void _resetFromBlock(EmbedHomepageBlockModel block) {
@@ -62,6 +88,40 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
       _isLoading = true;
       _errorMessage = null;
       _reloadToken++;
+    });
+  }
+
+  bool _handleHardwareKeyEvent(KeyEvent event) {
+    final isModifierPressed = HardwareKeyboard.instance.isControlPressed || HardwareKeyboard.instance.isMetaPressed;
+
+    if (isModifierPressed == _isModifierPressed) {
+      return false;
+    }
+
+    _setStateSafely(() {
+      _isModifierPressed = isModifierPressed;
+    });
+    return false;
+  }
+
+  void _showInteractionHintTemporarily() {
+    if (!_usesInteractionLock || _isEmbedInteractionEnabled || _errorMessage != null) {
+      return;
+    }
+
+    _interactionHintTimer?.cancel();
+
+    if (!_showInteractionHint) {
+      _setStateSafely(() {
+        _showInteractionHint = true;
+      });
+    }
+
+    _interactionHintTimer = Timer(const Duration(seconds: 2), () {
+      if (!mounted || !_showInteractionHint) return;
+      _setStateSafely(() {
+        _showInteractionHint = false;
+      });
     });
   }
 
@@ -124,80 +184,131 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
       );
     }
 
-    return _EmbedContainer(
-      child: Stack(
-        children: [
-          HomepageInlineEmbedView(
-            key: ValueKey('${widget.block.hashCode}-$_reloadToken'),
-            document: document,
-            height: _embedHeight,
-            onHeightChanged: (height) {
-              final clampedHeight = height.clamp(
-                homepageEmbedMinimumHeight,
-                homepageEmbedMaximumHeight,
-              );
+    return MouseRegion(
+      onEnter: _usesInteractionLock ? (_) => _showInteractionHintTemporarily() : null,
+      onHover: _usesInteractionLock ? (_) => _showInteractionHintTemporarily() : null,
+      child: Listener(
+        onPointerDown: _usesInteractionLock ? (_) => _showInteractionHintTemporarily() : null,
+        onPointerSignal: _usesInteractionLock ? (_) => _showInteractionHintTemporarily() : null,
+        child: _EmbedContainer(
+          child: Stack(
+            children: [
+              HomepageInlineEmbedView(
+                key: ValueKey('${widget.block.hashCode}-$_reloadToken'),
+                document: document,
+                height: _embedHeight,
+                isInteractionEnabled: _isEmbedInteractionEnabled,
+                onHeightChanged: (height) {
+                  final clampedHeight = height.clamp(
+                    homepageEmbedMinimumHeight,
+                    homepageEmbedMaximumHeight,
+                  );
 
-              if ((clampedHeight - _embedHeight).abs() < 1) return;
+                  if ((clampedHeight - _embedHeight).abs() < 1) return;
 
-              _setStateSafely(() {
-                _embedHeight = clampedHeight;
-              });
-            },
-            onLoadingChanged: (isLoading) {
-              if (_isLoading == isLoading) return;
+                  _setStateSafely(() {
+                    _embedHeight = clampedHeight;
+                  });
+                },
+                onLoadingChanged: (isLoading) {
+                  if (_isLoading == isLoading) return;
 
-              _setStateSafely(() {
-                _isLoading = isLoading;
-              });
-            },
-            onErrorChanged: (message) {
-              if (_errorMessage == message) return;
+                  _setStateSafely(() {
+                    _isLoading = isLoading;
+                  });
+                },
+                onErrorChanged: (message) {
+                  if (_errorMessage == message) return;
 
-              _setStateSafely(() {
-                _errorMessage = message;
-              });
-            },
-          ),
-          if (_isLoading)
-            const Positioned(
-              top: 12,
-              left: 12,
-              right: 12,
-              child: LinearProgressIndicator(),
-            ),
-          if (_errorMessage != null)
-            Positioned.fill(
-              child: ColoredBox(
-                color: theme.colorScheme.surface.withValues(alpha: 0.92),
-                child: Padding(
-                  padding: const .all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Failed to load external content.',
-                        style: theme.textTheme.titleSmall,
-                        textAlign: .center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _errorMessage!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                  _setStateSafely(() {
+                    _errorMessage = message;
+                  });
+                },
+              ),
+              if (_usesInteractionLock && _showInteractionHint && !_isEmbedInteractionEnabled)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            theme.colorScheme.surface.withValues(alpha: 0.06),
+                            theme.colorScheme.surface.withValues(alpha: 0.12),
+                          ],
                         ),
-                        textAlign: .center,
                       ),
-                      const SizedBox(height: 12),
-                      FilledButton.tonal(
-                        onPressed: _retry,
-                        child: const Text('Retry'),
+                      child: Center(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.surface.withValues(alpha: 0.96),
+                            borderRadius: .circular(999),
+                            border: Border.all(
+                              color: theme.colorScheme.outlineVariant,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            child: Text(
+                              'Hold Ctrl or Cmd to interact with this embed',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: .center,
+                            ),
+                          ),
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-        ],
+              if (_isLoading)
+                const Positioned(
+                  top: 12,
+                  left: 12,
+                  right: 12,
+                  child: LinearProgressIndicator(),
+                ),
+              if (_errorMessage != null)
+                Positioned.fill(
+                  child: ColoredBox(
+                    color: theme.colorScheme.surface.withValues(alpha: 0.92),
+                    child: Padding(
+                      padding: const .all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Failed to load external content.',
+                            style: theme.textTheme.titleSmall,
+                            textAlign: .center,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _errorMessage!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            textAlign: .center,
+                          ),
+                          const SizedBox(height: 12),
+                          FilledButton.tonal(
+                            onPressed: _retry,
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

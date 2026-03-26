@@ -5,6 +5,7 @@ class HomepageInlineEmbedView extends StatefulWidget {
   const HomepageInlineEmbedView({
     required this.document,
     required this.height,
+    required this.isInteractionEnabled,
     this.onHeightChanged,
     this.onLoadingChanged,
     this.onErrorChanged,
@@ -13,6 +14,7 @@ class HomepageInlineEmbedView extends StatefulWidget {
 
   final String document;
   final double height;
+  final bool isInteractionEnabled;
   final ValueChanged<double>? onHeightChanged;
   final ValueChanged<bool>? onLoadingChanged;
   final ValueChanged<String?>? onErrorChanged;
@@ -78,8 +80,11 @@ class _HomepageInlineEmbedViewState extends State<HomepageInlineEmbedView> {
     return SizedBox(
       height: widget.height,
       width: double.infinity,
-      child: WebViewWidget(
-        controller: _controller,
+      child: IgnorePointer(
+        ignoring: !widget.isInteractionEnabled,
+        child: WebViewWidget(
+          controller: _controller,
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
 # KSTA Flutter News App
 
+Live demo: [bschmalb.github.io/flutter-news-app](https://bschmalb.github.io/flutter-news-app/)
+
 A Flutter case study for a recruitment process that recreates a modern, modular news experience on top of the KSTA content API.
 
 The goal of the project was not just to render API data, but to turn a CMS-driven payload into a readable, responsive, editorial product with a deliberately small architecture, clear configuration boundaries, and production-minded handling for images, embeds, caching, and failure states.

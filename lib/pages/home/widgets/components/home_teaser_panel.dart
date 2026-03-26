@@ -30,12 +30,11 @@ class HomepageTeaserPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isFeatured = variant == HomepageTeaserPanelVariant.featured;
     final shouldShowSkeleton = article == null && isLoading;
     final displayArticle = article ?? (shouldShowSkeleton ? homepageTeaserPlaceholderArticle : null);
-    final titleColor = theme.colorScheme.onSurface;
-    final fallbackColor = theme.colorScheme.surfaceContainerHighest;
+    final titleColor = Theme.of(context).colorScheme.onSurface;
+    final fallbackColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
     return InkWell(
       onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
@@ -261,7 +260,6 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final descriptionText =
         article?.description ?? (isLoading ? 'Loading article preview...' : 'Article preview unavailable.');
 
@@ -278,9 +276,8 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
             article?.title ?? 'Story #$teaserId',
             maxLines: useCompactLayout ? 2 : null,
             overflow: useCompactLayout ? .ellipsis : null,
-            style: (isFeatured ? theme.textTheme.headlineSmall : theme.textTheme.titleMedium)?.copyWith(
-              color: titleColor,
-            ),
+            style: (isFeatured ? Theme.of(context).textTheme.headlineSmall : Theme.of(context).textTheme.titleMedium)
+                ?.copyWith(color: titleColor),
           ),
           if (useCompactLayout)
             Expanded(
@@ -292,13 +289,15 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
                     descriptionText,
                     maxLines: 2,
                     overflow: .ellipsis,
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                   const Spacer(),
                   ArticleMetaRow(
                     label: label,
                     article: article,
-                    labelColor: theme.colorScheme.onSurfaceVariant,
+                    labelColor: Theme.of(context).colorScheme.onSurfaceVariant,
                     compact: true,
                   ),
                 ],
@@ -309,9 +308,11 @@ class _HomepageTeaserPanelTextContent extends StatelessWidget {
               descriptionText,
               maxLines: isFeatured ? 4 : 3,
               overflow: .ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
-            ArticleMetaRow(label: label, article: article, labelColor: theme.colorScheme.onSurfaceVariant),
+            ArticleMetaRow(label: label, article: article, labelColor: Theme.of(context).colorScheme.onSurfaceVariant),
           ],
         ],
       ),

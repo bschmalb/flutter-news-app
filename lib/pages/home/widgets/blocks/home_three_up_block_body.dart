@@ -14,16 +14,14 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ids = block.teaserIds.take(3).toList(growable: false);
-    final breakpoint = context.breakpoint;
-    final blockSpacing = breakpoint.blockSpacing;
 
     if (ids.isEmpty) {
       return const HomepageEmptySectionBody();
     }
 
-    if (breakpoint == AppBreakpoint.compact) {
+    if (context.breakpoint == AppBreakpoint.compact) {
       return Column(
-        spacing: blockSpacing,
+        spacing: context.breakpoint.blockSpacing,
         children: [
           for (var index = 0; index < ids.length; index++)
             HomepageTeaserPanel(
@@ -35,15 +33,15 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
       );
     }
 
-    final columns = breakpoint == AppBreakpoint.medium ? 2 : 3;
+    final columns = context.breakpoint == AppBreakpoint.medium ? 2 : 3;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final itemWidth = (constraints.maxWidth - (blockSpacing * (columns - 1))) / columns;
+        final itemWidth = (constraints.maxWidth - (context.breakpoint.blockSpacing * (columns - 1))) / columns;
 
         return Wrap(
-          spacing: blockSpacing,
-          runSpacing: blockSpacing,
+          spacing: context.breakpoint.blockSpacing,
+          runSpacing: context.breakpoint.blockSpacing,
           children: [
             for (final teaserId in ids)
               SizedBox(

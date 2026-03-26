@@ -13,18 +13,15 @@ class HomepageGenericBlockBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final breakpoint = context.breakpoint;
-    final blockSpacing = breakpoint.blockSpacing;
-
     if (block.teaserIds.isEmpty) {
       return const HomepageEmptySectionBody(
         message: 'This section has no teaser IDs. It may be a utility or social module.',
       );
     }
 
-    if (breakpoint == AppBreakpoint.compact) {
+    if (context.breakpoint == AppBreakpoint.compact) {
       return Column(
-        spacing: blockSpacing,
+        spacing: context.breakpoint.blockSpacing,
         children: [
           for (var index = 0; index < block.teaserIds.length; index++)
             HomepageTeaserPanel(
@@ -37,15 +34,15 @@ class HomepageGenericBlockBody extends StatelessWidget {
       );
     }
 
-    final columns = breakpoint.contentColumns;
+    final columns = context.breakpoint.contentColumns;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final itemWidth = (constraints.maxWidth - (blockSpacing * (columns - 1))) / columns;
+        final itemWidth = (constraints.maxWidth - (context.breakpoint.blockSpacing * (columns - 1))) / columns;
 
         return Wrap(
-          spacing: blockSpacing,
-          runSpacing: blockSpacing,
+          spacing: context.breakpoint.blockSpacing,
+          runSpacing: context.breakpoint.blockSpacing,
           children: [
             for (final teaserId in block.teaserIds)
               SizedBox(

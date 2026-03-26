@@ -6,15 +6,15 @@ import 'package:ksta/utils/app_breakpoint.dart';
 import 'package:ksta/widgets/article_title_prefix_text.dart';
 
 class ArticleHeader extends StatelessWidget {
-  const ArticleHeader({super.key, required this.article, required this.breakpoint});
+  const ArticleHeader({super.key, required this.article});
 
   final ArticlePreviewModel article;
-  final AppBreakpoint breakpoint;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final metaLabelStyle = theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final metaLabelStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
 
     return Align(
       alignment: .centerLeft,
@@ -28,7 +28,12 @@ class ArticleHeader extends StatelessWidget {
               runSpacing: 8,
               children: [
                 for (final crumb in articleDetailBreadcrumbs(article.urlPath))
-                  Text(crumb, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                  Text(
+                    crumb,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  ),
               ],
             ),
             const SizedBox(height: 20),
@@ -36,17 +41,17 @@ class ArticleHeader extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               article.title,
-              style: switch (breakpoint) {
-                AppBreakpoint.compact => theme.textTheme.headlineMedium,
-                AppBreakpoint.medium => theme.textTheme.displaySmall,
-                AppBreakpoint.expanded => theme.textTheme.displayMedium,
+              style: switch (context.breakpoint) {
+                AppBreakpoint.compact => Theme.of(context).textTheme.headlineMedium,
+                AppBreakpoint.medium => Theme.of(context).textTheme.displaySmall,
+                AppBreakpoint.expanded => Theme.of(context).textTheme.displayMedium,
               }?.copyWith(height: 1.05),
             ),
             if (article.primaryAuthorName != null) ...[
               const SizedBox(height: 14),
               Text(
                 'Von ${article.primaryAuthorName!}',
-                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.onSurface),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
             ],
             const SizedBox(height: 18),
@@ -61,7 +66,10 @@ class ArticleHeader extends StatelessWidget {
                 if (article.isPaid)
                   Text(
                     'KStA Plus',
-                    style: metaLabelStyle?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+                    style: metaLabelStyle?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
               ],
             ),

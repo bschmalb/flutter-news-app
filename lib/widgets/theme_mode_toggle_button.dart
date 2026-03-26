@@ -6,15 +6,12 @@ class ThemeModeToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = context.themeManager;
-    final isDarkMode = themeManager.isDarkMode;
-
     return Padding(
       padding: const EdgeInsetsDirectional.only(end: 4),
       child: IconButton(
-        tooltip: isDarkMode ? 'Switch to light mode' : 'Switch to dark mode',
-        onPressed: themeManager.enabled ? themeManager.toggleThemeMode : null,
-        icon: Icon(isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
+        tooltip: context.themeManager.isDarkMode ? 'Switch to light mode' : 'Switch to dark mode',
+        onPressed: context.themeManager.enabled ? context.themeManager.toggleThemeMode : null,
+        icon: Icon(context.themeManager.isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
       ),
     );
   }

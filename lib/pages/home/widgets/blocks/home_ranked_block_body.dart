@@ -12,8 +12,6 @@ class HomepageRankedBlockBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (block.teaserIds.isEmpty) {
       return const HomepageEmptySectionBody();
     }
@@ -28,8 +26,8 @@ class HomepageRankedBlockBody extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 14,
-                backgroundColor: theme.colorScheme.primaryContainer,
-                foregroundColor: theme.colorScheme.onPrimaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 child: Text('${index + 1}'),
               ),
               Expanded(

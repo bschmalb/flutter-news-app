@@ -9,8 +9,6 @@ class ArticleInlineImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -27,11 +25,13 @@ class ArticleInlineImage extends StatelessWidget {
             spacing: 10,
             runSpacing: 4,
             children: [
-              if (image.caption != null) Text(image.caption!, style: theme.textTheme.bodySmall),
+              if (image.caption != null) Text(image.caption!, style: Theme.of(context).textTheme.bodySmall),
               if (image.copyrights != null)
                 Text(
                   image.copyrights!,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
             ],
           ),

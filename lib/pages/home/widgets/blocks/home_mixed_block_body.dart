@@ -19,14 +19,13 @@ class HomepageMixedBlockBody extends StatelessWidget {
     return Column(
       spacing: 24,
       children: [
-        for (var index = 0; index < block.teaserIds.length; index++) ...[
+        for (var index = 0; index < block.teaserIds.length; index++)
           HomepageTeaserListTile(
             teaserId: block.teaserIds[index],
             article: controller.articleFor(block.teaserIds[index]),
             isLoading: controller.isLoading,
             label: index == 0 ? 'Lead story' : 'Story',
           ),
-        ],
       ],
     );
   }

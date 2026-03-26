@@ -139,8 +139,6 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (!_hasConsent) {
       return _EmbedContainer(
         child: Padding(
@@ -148,11 +146,11 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.block.providerName ?? 'External content', style: theme.textTheme.titleSmall),
+              Text(widget.block.providerName ?? 'External content', style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 8),
               Text(
                 'This section loads content from an external provider. Tap below to load it inline.',
-                style: theme.textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 12),
               FilledButton.tonal(onPressed: _grantConsent, child: const Text('Load external content')),
@@ -167,7 +165,10 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
       return _EmbedContainer(
         child: Padding(
           padding: const .all(16),
-          child: Text('No embeddable payload was provided for this section.', style: theme.textTheme.bodyMedium),
+          child: Text(
+            'No embeddable payload was provided for this section.',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
       );
     }
@@ -219,24 +220,24 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            theme.colorScheme.surface.withValues(alpha: 0.06),
-                            theme.colorScheme.surface.withValues(alpha: 0.12),
+                            Theme.of(context).colorScheme.surface.withValues(alpha: 0.06),
+                            Theme.of(context).colorScheme.surface.withValues(alpha: 0.12),
                           ],
                         ),
                       ),
                       child: Center(
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.surface.withValues(alpha: 0.96),
+                            color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.96),
                             borderRadius: .circular(999),
-                            border: Border.all(color: theme.colorScheme.outlineVariant),
+                            border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             child: Text(
                               'Hold Ctrl or Cmd to interact with this embed',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurface,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontWeight: FontWeight.w600,
                               ),
                               textAlign: .center,
@@ -251,7 +252,7 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
               if (_errorMessage != null)
                 Positioned.fill(
                   child: ColoredBox(
-                    color: theme.colorScheme.surface.withValues(alpha: 0.92),
+                    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.92),
                     child: Padding(
                       padding: const .all(16),
                       child: Column(
@@ -259,13 +260,15 @@ class _HomepageEmbedBlockBodyState extends State<HomepageEmbedBlockBody> {
                         children: [
                           Text(
                             'Failed to load external content.',
-                            style: theme.textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.titleSmall,
                             textAlign: .center,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             _errorMessage!,
-                            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                             textAlign: .center,
                           ),
                           const SizedBox(height: 12),
@@ -290,13 +293,11 @@ class _EmbedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLow,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: .circular(16),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: ClipRRect(borderRadius: .circular(16), child: child),
     );

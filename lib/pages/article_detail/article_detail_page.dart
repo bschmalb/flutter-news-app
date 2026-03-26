@@ -97,40 +97,36 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final breakpoint = context.breakpoint;
-    final article = _article;
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           const KstaSliverAppBar(floating: true, snap: true, automaticallyImplyLeading: true),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: breakpoint.horizontalPadding),
+            padding: EdgeInsets.symmetric(horizontal: context.breakpoint.horizontalPadding),
             sliver: SliverToBoxAdapter(
               child: Align(
                 alignment: .topCenter,
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: breakpoint.articleDetailMaxContentWidth),
+                  constraints: BoxConstraints(maxWidth: context.breakpoint.articleDetailMaxContentWidth),
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [
-                      if (_isLoading && article == null) ...[
+                      if (_isLoading && _article == null)
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 96),
                           child: Center(child: CircularProgressIndicator.adaptive()),
-                        ),
-                      ] else if (article == null) ...[
+                        )
+                      else if (_article == null)
                         ArticleErrorState(
                           message: _errorMessage ?? 'Article not found.',
                           onRetry: () => _loadArticleIfNeeded(refresh: true),
-                        ),
-                      ] else ...[
-                        ArticleHeader(article: article, breakpoint: breakpoint),
+                        )
+                      else ...[
+                        ArticleHeader(article: _article!),
                         const SizedBox(height: 32),
-                        if (article.image != null) ArticleLeadImage(image: article.image!, breakpoint: breakpoint),
-                        if (article.introText case final intro?)
+                        if (_article!.image != null) ArticleLeadImage(image: _article!.image!),
+                        if (_article!.introText case final intro?)
                           Align(
                             alignment: .centerLeft,
                             child: ConstrainedBox(
@@ -139,7 +135,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                                 padding: const .only(top: 28, bottom: 12),
                                 child: Text(
                                   articleDetailStripHtml(intro),
-                                  style: theme.textTheme.titleLarge?.copyWith(
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                     fontSize: 24,
                                     height: 1.45,
                                     fontWeight: FontWeight.w400,
@@ -152,7 +148,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           alignment: .centerLeft,
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 760),
-                            child: ArticleContentBlocks(article: article, relatedArticles: _relatedArticles),
+                            child: ArticleContentBlocks(article: _article!, relatedArticles: _relatedArticles),
                           ),
                         ),
                       ],

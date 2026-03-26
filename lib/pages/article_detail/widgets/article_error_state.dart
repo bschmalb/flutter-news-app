@@ -8,13 +8,11 @@ class ArticleErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const .symmetric(vertical: 96),
       child: Column(
         children: [
-          Text(message, style: theme.textTheme.titleMedium, textAlign: .center),
+          Text(message, style: Theme.of(context).textTheme.titleMedium, textAlign: .center),
           const SizedBox(height: 16),
           FilledButton(onPressed: onRetry, child: const Text('Try again')),
         ],

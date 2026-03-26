@@ -16,9 +16,7 @@ class KstaSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final toolbarHeight = _toolbarHeight(theme);
-    final logoColor = _foregroundColor(theme);
+    final toolbarHeight = _toolbarHeight(Theme.of(context));
 
     return SliverAppBar(
       floating: floating,
@@ -40,9 +38,9 @@ class KstaSliverAppBar extends StatelessWidget {
                   begin: .topCenter,
                   end: .bottomCenter,
                   colors: [
-                    theme.scaffoldBackgroundColor,
-                    theme.scaffoldBackgroundColor,
-                    theme.scaffoldBackgroundColor.withValues(alpha: 0),
+                    Theme.of(context).scaffoldBackgroundColor,
+                    Theme.of(context).scaffoldBackgroundColor,
+                    Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0),
                   ],
                   stops: const [0, 0.5, 1],
                 ),
@@ -59,7 +57,7 @@ class KstaSliverAppBar extends StatelessWidget {
                 ImageAssets.kstaIcon,
                 height: toolbarHeight * _logoHeightFactor,
                 semanticsLabel: 'KSTA',
-                colorFilter: ColorFilter.mode(logoColor, .srcIn),
+                colorFilter: ColorFilter.mode(_foregroundColor(Theme.of(context)), .srcIn),
               ),
             ),
           ),

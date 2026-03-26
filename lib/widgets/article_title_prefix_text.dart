@@ -9,9 +9,10 @@ class ArticleTitlePrefixText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final highlightColor = theme.brightness == Brightness.dark ? const Color(0xFF4AA8FF) : const Color(0xFF0B6FC8);
-    final baseStyle = prominent ? theme.textTheme.titleLarge : theme.textTheme.titleSmall;
+    final highlightColor = Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF4AA8FF)
+        : const Color(0xFF0B6FC8);
+    final baseStyle = prominent ? Theme.of(context).textTheme.titleLarge : Theme.of(context).textTheme.titleSmall;
 
     return Text(
       text,

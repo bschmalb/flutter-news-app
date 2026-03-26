@@ -42,14 +42,12 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
       builder: (context, child) {
         final block = widget.controller.block;
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
-        final breakpoint = context.breakpoint;
-        final sectionPadding = breakpoint.sectionPadding.resolve(Directionality.of(context));
 
         return Padding(
-          padding: sectionPadding,
+          padding: context.breakpoint.sectionPadding.resolve(Directionality.of(context)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: breakpoint.blockSpacing,
+            spacing: context.breakpoint.blockSpacing,
             children: [
               HomepageSectionHeader(block: block),
               if (showError)

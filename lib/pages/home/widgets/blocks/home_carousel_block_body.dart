@@ -13,16 +13,13 @@ class HomepageCarouselBlockBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final breakpoint = context.breakpoint;
-    final blockSpacing = breakpoint.blockSpacing;
-
     if (block.teaserIds.isEmpty) {
       return const HomepageEmptySectionBody();
     }
 
-    if (breakpoint == AppBreakpoint.compact) {
+    if (context.breakpoint == AppBreakpoint.compact) {
       return Column(
-        spacing: blockSpacing,
+        spacing: context.breakpoint.blockSpacing,
         children: [
           for (var index = 0; index < block.teaserIds.length; index++)
             HomepageTeaserPanel(
@@ -35,12 +32,12 @@ class HomepageCarouselBlockBody extends StatelessWidget {
       );
     }
 
-    final cardWidth = switch (breakpoint) {
+    final cardWidth = switch (context.breakpoint) {
       AppBreakpoint.medium => 280.0,
       AppBreakpoint.expanded => 320.0,
       AppBreakpoint.compact => 220.0,
     };
-    final listHeight = switch (breakpoint) {
+    final listHeight = switch (context.breakpoint) {
       AppBreakpoint.medium => 360.0,
       AppBreakpoint.expanded => 400.0,
       AppBreakpoint.compact => 260.0,
@@ -51,7 +48,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: .horizontal,
         itemCount: block.teaserIds.length,
-        separatorBuilder: (context, index) => SizedBox(width: blockSpacing),
+        separatorBuilder: (context, index) => SizedBox(width: context.breakpoint.blockSpacing),
         itemBuilder: (context, index) {
           final teaserId = block.teaserIds[index];
 

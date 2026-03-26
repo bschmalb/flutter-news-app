@@ -13,8 +13,6 @@ class ArticleContentBlocks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -24,7 +22,7 @@ class ArticleContentBlocks extends StatelessWidget {
               padding: const .only(bottom: 22),
               child: Text(
                 articleDetailStripHtml(block.text ?? ''),
-                style: theme.textTheme.bodyLarge?.copyWith(height: 1.8),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.8),
               ),
             ),
             ArticlePreviewContentBlockType.image => Padding(

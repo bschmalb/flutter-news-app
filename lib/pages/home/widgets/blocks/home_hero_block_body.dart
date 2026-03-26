@@ -14,8 +14,6 @@ class HomepageHeroBlockBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ids = block.teaserIds;
-    final breakpoint = context.breakpoint;
-    final spacing = breakpoint.sectionSpacing;
 
     if (ids.isEmpty) {
       return const HomepageEmptySectionBody();
@@ -23,23 +21,24 @@ class HomepageHeroBlockBody extends StatelessWidget {
 
     final featured = ids.first;
     final secondary = ids.skip(1).take(2).toList(growable: false);
-    final useHorizontalHero = breakpoint != AppBreakpoint.compact;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: spacing,
+      spacing: context.breakpoint.sectionSpacing,
       children: [
         HomepageTeaserPanel(
           teaserId: featured,
           article: controller.articleFor(featured),
           isLoading: controller.isLoading,
           variant: HomepageTeaserPanelVariant.featured,
-          layout: useHorizontalHero ? HomepageTeaserPanelLayout.horizontal : HomepageTeaserPanelLayout.vertical,
+          layout: context.breakpoint != AppBreakpoint.compact
+              ? HomepageTeaserPanelLayout.horizontal
+              : HomepageTeaserPanelLayout.vertical,
         ),
         if (secondary.isNotEmpty) ...[
-          if (breakpoint == AppBreakpoint.compact)
+          if (context.breakpoint == AppBreakpoint.compact)
             Column(
-              spacing: spacing,
+              spacing: context.breakpoint.sectionSpacing,
               children: [
                 for (var index = 0; index < secondary.length; index++)
                   HomepageTeaserPanel(
@@ -52,7 +51,7 @@ class HomepageHeroBlockBody extends StatelessWidget {
           else
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: spacing,
+              spacing: context.breakpoint.sectionSpacing,
               children: [
                 for (var index = 0; index < secondary.length; index++)
                   Expanded(

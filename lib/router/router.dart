@@ -31,5 +31,6 @@ class ArticleDetailRoute extends GoRouteData with $ArticleDetailRoute {
   final int id;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => ArticleDetailPage(slug: slug, id: id);
+  Widget build(BuildContext context, GoRouterState state) =>
+      ArticleDetailPage(key: ValueKey(id), slug: slug, id: id);
 }

@@ -28,7 +28,7 @@ class HomepageTeaserListTile extends StatelessWidget {
     final displayArticle = article ?? (shouldShowSkeleton ? homepageTeaserPlaceholderArticle : null);
 
     return InkWell(
-      onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).go(context) : null,
+      onTap: article != null ? () => ArticleDetailRoute(slug: article!.routeSlug, id: article!.id).push<void>(context) : null,
       borderRadius: .circular(12),
       child: Skeletonizer(
         enabled: shouldShowSkeleton,

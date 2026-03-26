@@ -3,6 +3,7 @@ import 'package:ksta/app/app_repository_globals.dart';
 import 'package:ksta/data/news/models/article_preview_content_block_model.dart';
 import 'package:ksta/data/news/models/article_preview_image_model.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
+import 'package:ksta/pages/article_detail/widgets/article_error_state.dart';
 import 'package:ksta/pages/home/widgets/components/app_network_image.dart';
 import 'package:ksta/pages/home/widgets/components/home_teaser_list_tile.dart';
 import 'package:ksta/utils/app_breakpoint.dart';
@@ -113,7 +114,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: breakpoint.articleDetailMaxContentWidth),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: .start,
                     children: [
                       if (_isLoading && article == null) ...[
                         const Padding(
@@ -121,22 +122,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           child: Center(child: CircularProgressIndicator.adaptive()),
                         ),
                       ] else if (article == null) ...[
-                        Padding(
-                          padding: const .symmetric(vertical: 96),
-                          child: Column(
-                            children: [
-                              Text(
-                                _errorMessage ?? 'Article not found.',
-                                style: theme.textTheme.titleMedium,
-                                textAlign: .center,
-                              ),
-                              const SizedBox(height: 16),
-                              FilledButton(
-                                onPressed: () => _loadArticleIfNeeded(refresh: true),
-                                child: const Text('Try again'),
-                              ),
-                            ],
-                          ),
+                        ArticleErrorState(
+                          message: _errorMessage ?? 'Article not found.',
+                          onRetry: () => _loadArticleIfNeeded(refresh: true),
                         ),
                       ] else ...[
                         _ArticleHeader(article: article, breakpoint: breakpoint),
@@ -164,10 +152,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           alignment: .centerLeft,
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 760),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _buildContentBlocks(context, article),
-                            ),
+                            child: _ArticleContentBlocks(article: article, relatedArticles: _relatedArticles),
                           ),
                         ),
                       ],
@@ -182,31 +167,42 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       ),
     );
   }
+}
 
-  List<Widget> _buildContentBlocks(BuildContext context, ArticlePreviewModel article) {
+class _ArticleContentBlocks extends StatelessWidget {
+  const _ArticleContentBlocks({required this.article, required this.relatedArticles});
+
+  final ArticlePreviewModel article;
+  final Map<int, ArticlePreviewModel?> relatedArticles;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return [
-      for (final block in article.contentBlocks) ...[
-        switch (block.type) {
-          ArticlePreviewContentBlockType.paragraph => Padding(
-            padding: const .only(bottom: 22),
-            child: Text(_stripHtml(block.text ?? ''), style: theme.textTheme.bodyLarge?.copyWith(height: 1.8)),
-          ),
-          ArticlePreviewContentBlockType.image => Padding(
-            padding: const .symmetric(vertical: 16),
-            child: _ArticleInlineImage(image: block.image!),
-          ),
-          ArticlePreviewContentBlockType.relatedArticle => Padding(
-            padding: const .symmetric(vertical: 16),
-            child: _ArticleRelatedModule(
-              article: _relatedArticles[block.relatedArticleId],
-              relatedArticleId: block.relatedArticleId!,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final block in article.contentBlocks) ...[
+          switch (block.type) {
+            ArticlePreviewContentBlockType.paragraph => Padding(
+              padding: const EdgeInsets.only(bottom: 22),
+              child: Text(_stripHtml(block.text ?? ''), style: theme.textTheme.bodyLarge?.copyWith(height: 1.8)),
             ),
-          ),
-        },
+            ArticlePreviewContentBlockType.image => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: _ArticleInlineImage(image: block.image!),
+            ),
+            ArticlePreviewContentBlockType.relatedArticle => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: _ArticleRelatedModule(
+                article: relatedArticles[block.relatedArticleId],
+                relatedArticleId: block.relatedArticleId!,
+              ),
+            ),
+          },
+        ],
       ],
-    ];
+    );
   }
 }
 

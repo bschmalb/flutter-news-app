@@ -11,7 +11,7 @@ class HomepageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: controller.reload,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

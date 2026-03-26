@@ -45,25 +45,13 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
         final blockSpacing = breakpoint.blockSpacing;
-        final sectionPadding = breakpoint == AppBreakpoint.compact ? 16.0 : 20.0;
 
         return Padding(
-          padding: EdgeInsets.fromLTRB(
-            sectionPadding,
-            sectionPadding,
-            sectionPadding,
-            sectionPadding + 4,
-          ),
+          padding: breakpoint.sectionPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HomepageSectionHeader(block: block),
-              if (widget.controller.isLoading) ...[
-                SizedBox(height: blockSpacing),
-                LinearProgressIndicator(
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              ],
               SizedBox(height: blockSpacing),
               if (showError)
                 HomepageBlockErrorBody(

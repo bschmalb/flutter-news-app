@@ -117,13 +117,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             snap: true,
             automaticallyImplyLeading: true,
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              breakpoint.horizontalPadding,
-              12,
-              breakpoint.horizontalPadding,
-              48,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: breakpoint.horizontalPadding),
             sliver: SliverToBoxAdapter(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -212,6 +208,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               ),
             ),
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 48)),
         ],
       ),
     );

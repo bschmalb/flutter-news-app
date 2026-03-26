@@ -67,6 +67,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
               article: controller.articleFor(teaserId),
               isLoading: controller.isLoading,
               label: block.mobileSwipeableEnabled ? 'Swipeable collection' : 'Collection item',
+              useCompactLayout: true,
             ),
           );
         },

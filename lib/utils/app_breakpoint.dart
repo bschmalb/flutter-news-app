@@ -42,6 +42,17 @@ extension AppBreakpointValues on AppBreakpoint {
     AppBreakpoint.expanded => 32,
   };
 
+  EdgeInsetsGeometry get sectionPadding {
+    final padding = switch (this) {
+      AppBreakpoint.compact => 16.0,
+      AppBreakpoint.medium || AppBreakpoint.expanded => 20.0,
+    };
+
+    return EdgeInsets.all(padding).add(
+      const EdgeInsets.only(bottom: 4),
+    );
+  }
+
   double get blockSpacing => switch (this) {
     AppBreakpoint.compact => 14,
     AppBreakpoint.medium => 16,

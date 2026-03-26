@@ -19,6 +19,7 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final ids = block.teaserIds.take(3).toList(growable: false);
     final breakpoint = context.breakpoint;
+    final blockSpacing = breakpoint.blockSpacing;
 
     if (ids.isEmpty) {
       return const HomepageEmptySectionBody();
@@ -33,7 +34,7 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
               article: controller.articleFor(ids[index]),
               isLoading: controller.isLoading,
             ),
-            if (index != ids.length - 1) const SizedBox(height: 12),
+            if (index != ids.length - 1) SizedBox(height: blockSpacing),
           ],
         ],
       );
@@ -43,12 +44,11 @@ class HomepageThreeUpBlockBody extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        const spacing = 12.0;
-        final itemWidth = (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+        final itemWidth = (constraints.maxWidth - (blockSpacing * (columns - 1))) / columns;
 
         return Wrap(
-          spacing: spacing,
-          runSpacing: spacing,
+          spacing: blockSpacing,
+          runSpacing: blockSpacing,
           children: [
             for (final teaserId in ids)
               SizedBox(

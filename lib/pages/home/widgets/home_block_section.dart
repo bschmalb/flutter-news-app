@@ -44,6 +44,7 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
         final block = widget.controller.block;
         final showError = widget.controller.errorMessage != null && !widget.controller.hasAnyResolvedArticles;
         final breakpoint = context.breakpoint;
+        final blockSpacing = breakpoint.blockSpacing;
         final sectionPadding = breakpoint == AppBreakpoint.compact ? 16.0 : 20.0;
 
         return Padding(
@@ -58,12 +59,12 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
             children: [
               HomepageSectionHeader(block: block),
               if (widget.controller.isLoading) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: blockSpacing),
                 LinearProgressIndicator(
                   borderRadius: BorderRadius.circular(999),
                 ),
               ],
-              const SizedBox(height: 12),
+              SizedBox(height: blockSpacing),
               if (showError)
                 HomepageBlockErrorBody(
                   message: widget.controller.errorMessage!,
@@ -98,7 +99,7 @@ class _HomepageBlockSectionState extends State<HomepageBlockSection> {
                   ),
                 },
               if (block.sourceLayout != null || block.targetUrl != null) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: blockSpacing),
                 HomepageSectionFooter(block: block),
               ],
             ],

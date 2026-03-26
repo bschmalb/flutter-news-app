@@ -18,6 +18,7 @@ class HomepageGenericBlockBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final breakpoint = context.breakpoint;
+    final blockSpacing = breakpoint.blockSpacing;
 
     if (block.teaserIds.isEmpty) {
       return const HomepageEmptySectionBody(
@@ -35,7 +36,7 @@ class HomepageGenericBlockBody extends StatelessWidget {
               isLoading: controller.isLoading,
               label: 'Generic item',
             ),
-            if (index != block.teaserIds.length - 1) const SizedBox(height: 12),
+            if (index != block.teaserIds.length - 1) SizedBox(height: blockSpacing),
           ],
         ],
       );
@@ -45,12 +46,11 @@ class HomepageGenericBlockBody extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        const spacing = 12.0;
-        final itemWidth = (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+        final itemWidth = (constraints.maxWidth - (blockSpacing * (columns - 1))) / columns;
 
         return Wrap(
-          spacing: spacing,
-          runSpacing: spacing,
+          spacing: blockSpacing,
+          runSpacing: blockSpacing,
           children: [
             for (final teaserId in block.teaserIds)
               SizedBox(

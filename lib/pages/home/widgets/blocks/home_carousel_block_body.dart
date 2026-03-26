@@ -18,6 +18,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final breakpoint = context.breakpoint;
+    final blockSpacing = breakpoint.blockSpacing;
 
     if (block.teaserIds.isEmpty) {
       return const HomepageEmptySectionBody();
@@ -33,7 +34,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
               isLoading: controller.isLoading,
               label: block.mobileSwipeableEnabled ? 'Swipeable collection' : 'Collection item',
             ),
-            if (index != block.teaserIds.length - 1) const SizedBox(height: 12),
+            if (index != block.teaserIds.length - 1) SizedBox(height: blockSpacing),
           ],
         ],
       );
@@ -45,8 +46,8 @@ class HomepageCarouselBlockBody extends StatelessWidget {
       AppBreakpoint.compact => 220.0,
     };
     final listHeight = switch (breakpoint) {
-      AppBreakpoint.medium => 320.0,
-      AppBreakpoint.expanded => 360.0,
+      AppBreakpoint.medium => 360.0,
+      AppBreakpoint.expanded => 400.0,
       AppBreakpoint.compact => 260.0,
     };
 
@@ -55,7 +56,7 @@ class HomepageCarouselBlockBody extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: block.teaserIds.length,
-        separatorBuilder: (context, index) => const SizedBox(width: 12),
+        separatorBuilder: (context, index) => SizedBox(width: blockSpacing),
         itemBuilder: (context, index) {
           final teaserId = block.teaserIds[index];
 

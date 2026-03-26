@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksta/utils/app_breakpoint.dart';
 
 class HomepageBlockErrorBody extends StatelessWidget {
   const HomepageBlockErrorBody({
@@ -11,18 +12,22 @@ class HomepageBlockErrorBody extends StatelessWidget {
   final Future<void> Function() onRetry;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        message,
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      const SizedBox(height: 12),
-      OutlinedButton(
-        onPressed: onRetry,
-        child: const Text('Reload section'),
-      ),
-    ],
-  );
+  Widget build(BuildContext context) {
+    final spacing = context.breakpoint.blockSpacing;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          message,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        SizedBox(height: spacing),
+        OutlinedButton(
+          onPressed: onRetry,
+          child: const Text('Reload section'),
+        ),
+      ],
+    );
+  }
 }

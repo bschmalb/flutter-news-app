@@ -6,20 +6,35 @@ class ArticleMetaRow extends StatelessWidget {
     required this.label,
     required this.article,
     required this.labelColor,
+    this.compact = false,
     super.key,
   });
 
   final String label;
   final ArticlePreviewModel? article;
   final Color labelColor;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final metadata = <String>[
       if (article?.primaryAuthorName?.isNotEmpty ?? false) 'Von ${article!.primaryAuthorName!}' else label,
       if (article?.publishDate != null) _formatArticleTimestamp(context, article!.publishDate!),
+      if (article?.isPaid ?? false) 'PLUS',
     ];
     final theme = Theme.of(context);
+    final labelStyle = theme.textTheme.labelMedium?.copyWith(
+      color: labelColor,
+    );
+
+    if (compact) {
+      return Text(
+        metadata.join('  •  '),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: labelStyle,
+      );
+    }
 
     return Wrap(
       spacing: 8,
@@ -29,17 +44,7 @@ class ArticleMetaRow extends StatelessWidget {
         for (final item in metadata)
           Text(
             item,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: labelColor,
-            ),
-          ),
-        if (article?.isPaid ?? false)
-          Text(
-            'PLUS',
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: labelColor,
-              fontWeight: FontWeight.w700,
-            ),
+            style: item == 'PLUS' ? labelStyle?.copyWith(fontWeight: FontWeight.w700) : labelStyle,
           ),
       ],
     );

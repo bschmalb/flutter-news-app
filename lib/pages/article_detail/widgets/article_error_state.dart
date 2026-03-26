@@ -11,10 +11,10 @@ class ArticleErrorState extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 96),
+      padding: const .symmetric(vertical: 96),
       child: Column(
         children: [
-          Text(message, style: theme.textTheme.titleMedium, textAlign: TextAlign.center),
+          Text(message, style: theme.textTheme.titleMedium, textAlign: .center),
           const SizedBox(height: 16),
           FilledButton(onPressed: onRetry, child: const Text('Try again')),
         ],

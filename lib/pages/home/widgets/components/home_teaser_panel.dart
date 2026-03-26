@@ -185,7 +185,6 @@ class _HomepageTeaserPanelHorizontalLayout extends StatelessWidget {
         : null;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 20,
       children: [
         if (imageWidget != null) Expanded(flex: isFeatured ? 7 : 5, child: imageWidget),

@@ -42,7 +42,7 @@ class HomepageTeaserListTile extends StatelessWidget {
         child: Padding(
           padding: const .symmetric(vertical: 2),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .center,
             spacing: 12,
             children: [
               if (displayArticle?.image != null)

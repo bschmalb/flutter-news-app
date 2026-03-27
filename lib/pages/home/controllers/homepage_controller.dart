@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:ksta/app/app_repository_globals.dart';
+import 'package:ksta/data/news/homepage_repository.dart';
 import 'package:ksta/data/news/models/news_homepage_response_model.dart';
 import 'package:ksta/data/news/utils/homepage_block_mapper.dart';
+import 'package:ksta/data/utils/api.dart';
 import 'package:ksta/data/utils/api_exception.dart';
 import 'package:ksta/pages/home/controllers/homepage_block_controller.dart';
 
 class HomepageController extends ChangeNotifier {
-  HomepageController();
+  HomepageController({required Api api}) : _repository = HomepageRepository(api);
+
+  final HomepageRepository _repository;
 
   NewsHomepageResponseModel? get homepage => _homepage;
   NewsHomepageResponseModel? _homepage;
@@ -39,7 +42,7 @@ class HomepageController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final homepage = await homepageRepository.fetchHomepage();
+      final homepage = await _repository.fetchHomepage();
       // Rebuild the block controllers from the latest homepage response so each
       // section gets its own loading and article resolution state.
       final blockControllers = homepage

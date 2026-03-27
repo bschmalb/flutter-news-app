@@ -1,9 +1,12 @@
 import 'dart:developer';
-import 'package:ksta/app/app_repository_globals.dart';
+import 'package:ksta/data/news/homepage_repository.dart';
 import 'package:ksta/data/news/models/author_profile_model.dart';
+import 'package:ksta/data/utils/api.dart';
 
 class AuthorStore {
-  AuthorStore();
+  AuthorStore(Api api) : _repository = HomepageRepository(api);
+
+  final HomepageRepository _repository;
 
   final Map<int, AuthorProfileModel> _cache = {};
   final Map<int, Future<AuthorProfileModel?>> _inFlight = {};
@@ -29,7 +32,7 @@ class AuthorStore {
 
     final future = () async {
       try {
-        final author = await homepageRepository.fetchAuthorProfile(authorId);
+        final author = await _repository.fetchAuthorProfile(authorId);
         _cache[authorId] = author;
         return author;
       } catch (error, stackTrace) {

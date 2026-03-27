@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:ksta/app/app_repository_globals.dart';
+import 'package:ksta/app/service_locator.dart';
 import 'package:ksta/data/news/models/article_preview_content_block_model.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
 
@@ -66,8 +66,9 @@ class ArticleDetailController extends ChangeNotifier {
     _relatedArticles.addAll(cachedRelated);
     notifyListeners();
 
-    final missingIds =
-        refresh ? relatedIds : relatedIds.where((id) => cachedRelated[id] == null).toList(growable: false);
+    final missingIds = refresh
+        ? relatedIds
+        : relatedIds.where((id) => cachedRelated[id] == null).toList(growable: false);
 
     if (missingIds.isEmpty) return;
 

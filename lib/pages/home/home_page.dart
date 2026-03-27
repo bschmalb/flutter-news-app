@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksta/app/service_locator.dart';
 import 'package:ksta/pages/home/controllers/homepage_controller.dart';
 import 'package:ksta/pages/home/widgets/home_page_list.dart';
 
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _controller = HomepageController()..load();
+    _controller = HomepageController(api: api)..load();
   }
 
   @override

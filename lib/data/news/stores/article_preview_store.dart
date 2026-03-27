@@ -1,9 +1,16 @@
 import 'dart:developer';
-import 'package:ksta/app/app_repository_globals.dart';
+import 'package:ksta/data/news/homepage_repository.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
+import 'package:ksta/data/news/stores/author_store.dart';
+import 'package:ksta/data/utils/api.dart';
 
 class ArticlePreviewStore {
-  ArticlePreviewStore();
+  ArticlePreviewStore({required Api api, required AuthorStore authorStore})
+    : _repository = HomepageRepository(api),
+      _authorStore = authorStore;
+
+  final HomepageRepository _repository;
+  final AuthorStore _authorStore;
 
   final Map<int, ArticlePreviewModel> _cache = {};
   final Map<int, Future<ArticlePreviewModel?>> _inFlight = {};
@@ -29,7 +36,7 @@ class ArticlePreviewStore {
 
     final future = () async {
       try {
-        final article = await homepageRepository.fetchArticlePreview(articleId);
+        final article = await _repository.fetchArticlePreview(articleId);
         final hydratedArticle = await _hydrateAuthors(article, refresh: refresh);
         _cache[articleId] = hydratedArticle;
         return hydratedArticle;
@@ -59,7 +66,7 @@ class ArticlePreviewStore {
       return article;
     }
 
-    final authorsById = await authorStore.fetchMany(article.authorIds, refresh: refresh);
+    final authorsById = await _authorStore.fetchMany(article.authorIds, refresh: refresh);
     final authorNames = article.authorIds
         .map((authorId) => authorsById[authorId]?.displayName)
         .whereType<String>()

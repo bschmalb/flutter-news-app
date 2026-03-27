@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:ksta/app/app_repository_globals.dart';
+import 'package:ksta/app/service_locator.dart';
 import 'package:ksta/data/news/models/article_preview_model.dart';
 import 'package:ksta/data/news/models/homepage_block_model.dart';
 

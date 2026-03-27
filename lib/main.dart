@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksta/app/app.dart';
-import 'package:ksta/app/app_dependencies.dart';
+import 'package:ksta/app/service_locator.dart';
 import 'package:ksta/config/app_config.dart';
 
 Future<void> main() async {
@@ -12,8 +12,8 @@ Future<void> main() async {
   usePathUrlStrategy();
 
   AppConfig.validateRequired();
-  final appDependencies = await initializeAppDependencies();
+  await setupServiceLocator();
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-  runApp(App(themeManager: appDependencies.themeManager));
+  runApp(App(themeManager: themeManager));
 }
